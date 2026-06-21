@@ -151,31 +151,6 @@ body {
   color: #fff;
 }
 
-/* Progress bar */
-.progress-container {
-  margin-bottom: 20px;
-  display: none;
-}
-.progress-container.visible { display: block; }
-.progress-bar-bg {
-  height: 6px;
-  background: var(--bg-input);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.progress-bar-fill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 3px;
-  transition: width 0.3s;
-  width: 0%;
-}
-.progress-text {
-  font-size: 0.85em;
-  color: var(--text-dim);
-  margin-top: 6px;
-}
-
 /* Post cards */
 .posts-grid {
   display: grid;
@@ -361,14 +336,8 @@ mark {
       </select>
     </div>
     <span class="stats" id="stats">970 of 970 posts</span>
-    <button class="btn secondary" id="btn-embed">Embed Images</button>
-    <button class="btn" id="btn-save">Save as HTML</button>
   </div>
   <div class="tags-bar" id="tags-bar" style="display: flex;"><button class="tag-btn active">All</button><button class="tag-btn">350PP</button><button class="tag-btn">4 stars</button><button class="tag-btn">400PP</button><button class="tag-btn">450PP</button><button class="tag-btn">460PP</button><button class="tag-btn">4WD</button><button class="tag-btn">5 STARS</button><button class="tag-btn">500PP</button><button class="tag-btn">550PP</button><button class="tag-btn">580PP</button><button class="tag-btn">600</button><button class="tag-btn">600PP</button><button class="tag-btn">650PP</button><button class="tag-btn">700</button><button class="tag-btn">700PP</button><button class="tag-btn">720PP</button><button class="tag-btn">800PP</button><button class="tag-btn">900PP</button><button class="tag-btn">950PP</button><button class="tag-btn">AMG</button><button class="tag-btn">AUDI</button><button class="tag-btn">Abarth</button><button class="tag-btn">Alfa Romeo</button><button class="tag-btn">Alpine</button><button class="tag-btn">Alsace</button><button class="tag-btn">Amuse</button><button class="tag-btn">Aston Martin</button><button class="tag-btn">Autobianchi</button><button class="tag-btn">BAC</button><button class="tag-btn">BMW</button><button class="tag-btn">BOP</button><button class="tag-btn">Bathurst</button><button class="tag-btn">Brands Hatch</button><button class="tag-btn">Bugatti</button><button class="tag-btn">C2</button><button class="tag-btn">CHC</button><button class="tag-btn">Chaparral</button><button class="tag-btn">Chevrolet</button><button class="tag-btn">Citroen</button><button class="tag-btn">Corvette</button><button class="tag-btn">DMC</button><button class="tag-btn">DS Automobiles</button><button class="tag-btn">Daihatsu</button><button class="tag-btn">Daytona</button><button class="tag-btn">De Tomaso</button><button class="tag-btn">Deep Forest</button><button class="tag-btn">Dodge</button><button class="tag-btn">Exkert's Rod</button><button class="tag-btn">F1</button><button class="tag-btn">FF</button><button class="tag-btn">FR</button><button class="tag-btn">Ferrari</button><button class="tag-btn">Fiat</button><button class="tag-btn">Ford</button><button class="tag-btn">Fuji</button><button class="tag-btn">Garage RCR</button><button class="tag-btn">Genesis</button><button class="tag-btn">Goodwood</button><button class="tag-btn">Gr1</button><button class="tag-btn">Gr2</button><button class="tag-btn">Gr3</button><button class="tag-btn">Gr4</button><button class="tag-btn">GrB</button><button class="tag-btn">Gran Turismo</button><button class="tag-btn">Greddy</button><button class="tag-btn">Greening Auto Company</button><button class="tag-btn">High speed ring</button><button class="tag-btn">Historic</button><button class="tag-btn">Honda</button><button class="tag-btn">Hyundai</button><button class="tag-btn">Interlagos</button><button class="tag-btn">Jaguar</button><button class="tag-btn">KTM</button><button class="tag-btn">Lamborghini</button><button class="tag-btn">Lancia</button><button class="tag-btn">Le Mans</button><button class="tag-btn">Lexus</button><button class="tag-btn">MR</button><button class="tag-btn">Maserati</button><button class="tag-btn">Mazda</button><button class="tag-btn">McLaren</button><button class="tag-btn">Mercedes</button><button class="tag-btn">Mine's</button><button class="tag-btn">Mini</button><button class="tag-btn">Mitsubishi</button><button class="tag-btn">Nascar</button><button class="tag-btn">Nismo</button><button class="tag-btn">Nissan</button><button class="tag-btn">Nordschleife</button><button class="tag-btn">Nordschleiffe</button><button class="tag-btn">Pagani</button><button class="tag-btn">Peugeot</button><button class="tag-btn">Plymouth</button><button class="tag-btn">Polestar</button><button class="tag-btn">Pontiac</button><button class="tag-btn">Porsche</button><button class="tag-btn">Porsche Cup</button><button class="tag-btn">RR</button><button class="tag-btn">RUF</button><button class="tag-btn">Radical</button><button class="tag-btn">Re Amemiya</button><button class="tag-btn">Renault</button><button class="tag-btn">Road Atlanta</button><button class="tag-btn">Roadster Shop</button><button class="tag-btn">Route X</button><button class="tag-btn">SPA</button><button class="tag-btn">SWAP</button><button class="tag-btn">Sardegna</button><button class="tag-btn">Shelby</button><button class="tag-btn">Subaru</button><button class="tag-btn">Super Formula</button><button class="tag-btn">Suzuki</button><button class="tag-btn">TVR</button><button class="tag-btn">Tesla</button><button class="tag-btn">Tokyo</button><button class="tag-btn">Toyota</button><button class="tag-btn">Tsukuba</button><button class="tag-btn">VGT</button><button class="tag-btn">Volkswagen</button><button class="tag-btn">Volvo</button><button class="tag-btn">WTC800</button><button class="tag-btn">Wicked Fabrication</button><button class="tag-btn">Xiaomi</button><button class="tag-btn">all track</button><button class="tag-btn">daily race</button><button class="tag-btn">eiger</button><button class="tag-btn">fast</button><button class="tag-btn">historic cup</button><button class="tag-btn">jeep</button><button class="tag-btn">nordschleife</button><button class="tag-btn">suzuka</button><button class="tag-btn">swap</button><button class="tag-btn">watkins Glen</button></div>
-  <div class="progress-container" id="progress-container">
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
-    <div class="progress-text" id="progress-text"></div>
-  </div>
   <div class="posts-grid" id="posts-grid"><div class="post-card">
         <div class="post-header">
           <div class="post-title"><a href="https://www.patreon.com/posts/chevrolet-zr1-c6-153355416" target="_blank" rel="noopener">Chevrolet Corvette ZR1 (C6) ’09 - FR - 720PP - Sport Soft Tires - Route X - SWAP - 1.68</a></div>
@@ -14661,7 +14630,6 @@ var __BAKED_DATA__ = [{"id":"161626685","title":"Peugeot 9X8 '25 Gr1 - 4WD - WEC
   let sortMode = 'newest';
   let embeddedImages = {};  // url -> data URI
   let allImageUrls = [];    // flat list for lightbox nav
-  let embedAbort = null;
 
   // DOM refs
   const dropZone = document.getElementById('drop-zone');
@@ -14672,11 +14640,6 @@ var __BAKED_DATA__ = [{"id":"161626685","title":"Peugeot 9X8 '25 Gr1 - 4WD - WEC
   const statsEl = document.getElementById('stats');
   const tagsBar = document.getElementById('tags-bar');
   const postsGrid = document.getElementById('posts-grid');
-  const progressContainer = document.getElementById('progress-container');
-  const progressFill = document.getElementById('progress-fill');
-  const progressText = document.getElementById('progress-text');
-  const btnEmbed = document.getElementById('btn-embed');
-  const btnSave = document.getElementById('btn-save');
   const lightbox = document.getElementById('lightbox');
   const lbImg = document.getElementById('lb-img');
   const lbClose = document.getElementById('lb-close');
@@ -14868,76 +14831,6 @@ var __BAKED_DATA__ = [{"id":"161626685","title":"Peugeot 9X8 '25 Gr1 - 4WD - WEC
       });
     }
   }
-
-  // --- Image embedding ---
-  btnEmbed.addEventListener('click', async () => {
-    if (embedAbort) { embedAbort.abort(); embedAbort = null; btnEmbed.textContent = 'Embed Images'; progressContainer.classList.remove('visible'); return; }
-
-    const urls = allImageUrls.filter(u => !embeddedImages[u]);
-    if (urls.length === 0) { alert('All images already embedded.'); return; }
-
-    embedAbort = new AbortController();
-    btnEmbed.textContent = 'Stop Embedding';
-    progressContainer.classList.add('visible');
-    let done = 0;
-    let failed = 0;
-
-    for (const url of urls) {
-      if (embedAbort.signal.aborted) break;
-      try {
-        const resp = await fetch(url, { signal: embedAbort.signal });
-        const blob = await resp.blob();
-        const dataUri = await new Promise(resolve => {
-          const r = new FileReader();
-          r.onload = () => resolve(r.result);
-          r.readAsDataURL(blob);
-        });
-        embeddedImages[url] = dataUri;
-        // Update displayed images
-        document.querySelectorAll(`img[src="${CSS.escape(url)}"]`).forEach(img => img.src = dataUri);
-      } catch (e) {
-        if (e.name === 'AbortError') break;
-        failed++;
-      }
-      done++;
-      const pct = Math.round((done / urls.length) * 100);
-      progressFill.style.width = pct + '%';
-      progressText.textContent = `${done}/${urls.length} images processed` + (failed ? ` (${failed} failed)` : '');
-    }
-
-    embedAbort = null;
-    btnEmbed.textContent = 'Embed Images';
-    if (done >= urls.length) {
-      setTimeout(() => progressContainer.classList.remove('visible'), 2000);
-    }
-  });
-
-  // --- Save as HTML ---
-  btnSave.addEventListener('click', () => {
-    // Build a self-contained copy of this page with data baked in
-    const exportPosts = posts.map(p => {
-      const mapped = { ...p };
-      if (Array.isArray(p.imageUrls)) {
-        mapped.imageUrls = p.imageUrls.map(u => embeddedImages[u] || u);
-      }
-      return mapped;
-    });
-
-    // Get current document HTML
-    const clone = document.documentElement.cloneNode(true);
-    // Inject auto-load script
-    const scriptTag = clone.querySelector('script');
-    const autoLoad = `\nvar __BAKED_DATA__ = ${JSON.stringify(exportPosts)};\n`;
-    scriptTag.textContent = autoLoad + scriptTag.textContent;
-
-    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
-    const blob = new Blob([html], { type: 'text/html' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'patreon_posts_' + new Date().toISOString().slice(0, 10) + '.html';
-    a.click();
-    URL.revokeObjectURL(a.href);
-  });
 
   // --- Lightbox ---
   function openLightbox(index) {
