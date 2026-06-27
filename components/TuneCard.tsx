@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import type { Post } from '@/lib/types';
 import { withBasePath } from '@/lib/basePath';
+import { saveListScroll } from '@/lib/urlState';
 import Highlight from './Highlight';
 
 // A card whose whole surface navigates to the tune's detail page (stretched-link
@@ -10,7 +13,12 @@ export default function TuneCard({ post, query = '' }: { post: Post; query?: str
   const cover = post.imageUrls[0];
   return (
     <article className="post-card">
-      <Link href={`/tune/${post.id}`} className="card-overlay-link" aria-label={post.title} />
+      <Link
+        href={`/tune/${post.id}`}
+        className="card-overlay-link"
+        aria-label={post.title}
+        onClick={saveListScroll}
+      />
 
       {cover && (
         <img className="card-cover" src={withBasePath(cover)} loading="lazy" alt="" />
