@@ -1,91 +1,71 @@
 # GT7 Tunes
 
-A fast, static, single-page browser for a collection of **Gran Turismo 7** car
-tunes. It renders ~1,000 tune posts (car setup notes + screenshots) with
-full-text search and categorized filtering — no backend, no build step required.
+A fast browser for a collection of **Gran Turismo 7** car tunes — ~1,000 tune
+posts (setup notes + screenshots) with categorized filtering and full-text
+search. Built with **Next.js (App Router)** and exported to fully static files
+for GitHub Pages.
 
-## What's in the repo
+## Stack
 
-| Path              | Purpose                                                                 |
-| ----------------- | ---------------------------------------------------------------------- |
-| `index.html`      | The whole app — markup, styles, and logic. Holds **no data**.          |
-| `data/posts.json` | **The source of truth.** One JSON array of every tune. Never rendered into HTML. |
-| `images/`         | Locally-hosted post screenshots (WebP), referenced by `data/posts.json`. |
+- **Next.js 14** App Router + TypeScript, `output: 'export'` (no server — pure
+  static HTML/JS/CSS).
+- Hosted on **GitHub Pages** at base path `/gt7-tunes/`.
+- `data/posts.json` is the **canonical source of truth**, read at build time and
+  never mutated. All derived data (tag categories, filters) lives in `lib/`.
 
-The data lives entirely in `data/posts.json`, kept separate from the app so it
-stays a clean, reusable, diff-friendly source of truth. `index.html` fetches it
-at runtime — editing the page never risks touching the data, and vice versa.
+## Project layout
 
-## Viewing it
+| Path | Purpose |
+| --- | --- |
+| `app/` | Routes: `layout.tsx`, `page.tsx` (home), `globals.css` (the design). |
+| `components/` | React components (`HomeClient`, …). |
+| `lib/` | `posts.ts` (build-time data read), `types.ts`, `categorize.ts`, `filter.ts`, `basePath.ts`. |
+| `data/posts.json` | Canonical tune data (source of truth). |
+| `public/images/` | Local post screenshots (WebP), referenced by `data/posts.json`. |
+| `scripts/validate-data.mjs` | Read-only CI gate (ids unique, images present). |
+| `docs/solutions/` | Compound-engineering learnings (one note per gotcha solved). |
+| `.github/workflows/` | `deploy.yml` (build → Pages), `pr-preview.yml` (per-PR preview). |
 
-Because the page fetches `data/posts.json`, it needs to be served over HTTP
-(opening `index.html` straight from disk via `file://` blocks the fetch).
+## Develop
 
 ```bash
-# From the repo root:
-python3 -m http.server 8000
-# then open http://localhost:8000/
+npm install
+npm run dev        # http://localhost:3000/gt7-tunes
+npm run build      # static export → ./out
+npm run validate-data
 ```
 
-If you only have the files locally and don't want to run a server, open
-`index.html` anyway — when the automatic load fails it shows a drop zone, and
-you can **drag `data/posts.json` onto the page** to load it.
+To preview the production export exactly as Pages serves it (under the base
+path), serve `out/` from a parent dir so the app lives at `/gt7-tunes/`:
 
-### Hosting (GitHub Pages)
-
-This is a plain static site, so GitHub Pages works out of the box: enable Pages
-for the repository (Settings → Pages → deploy from branch), and the site is live
-— no build step.
-
-## Search & filtering
-
-The toolbar has a **full-text search** box (matches title, body, and tags) plus
-**sort** (newest / oldest / title). Below it, tags are organized into collapsible
-filter categories instead of one long flat list:
-
-- **PP** — performance-point brackets (350PP … 950PP), sorted numerically
-- **Class** — Gr1–Gr4, GrB, VGT, F1, Super Formula, NASCAR, etc.
-- **Drivetrain** — FF, FR, MR, RR, 4WD
-- **Track** — Nürburgring, Le Mans, Spa, Route X, …
-- **Make / Brand** — real GT7 manufacturers/brands (an explicit allow-list, incl. tuners like RUF, Amuse, Nismo and hot-rod shops like Chris Holstrom Concepts)
-- **Rating** — star ratings
-- **Setup** — swap, BOP, and other setup notes
-- **Other** — tags that aren't makes and don't fit elsewhere (e.g. model/generation tags like `C2`)
-
-Each chip shows how many tunes carry that tag. Filter logic:
-
-- **Within a category** selections are **OR** — e.g. picking `600PP` and `700PP`
-  shows tunes at either bracket.
-- **Across categories** selections are **AND** — e.g. `700PP` + `Ferrari` shows
-  only 700PP Ferraris.
-
-Search combines with the active filters, and **Clear filters** resets everything.
-Click any screenshot to open the lightbox (arrow keys / `Esc` to navigate).
-
-## Updating the data
-
-`data/posts.json` is an array of post objects. Each object has the shape:
-
-```json
-{
-  "id": "161626685",
-  "title": "Peugeot 9X8 '25 Gr1 - 4WD - WEC SPECS - Racing Hard Tires - All Track - 1.70",
-  "date": "Jun 20, 2026",
-  "body": "Setup notes…",
-  "url": "https://www.patreon.com/.../161626685",
-  "tags": ["4WD", "Gr1", "Peugeot", "WEC specs"],
-  "imageUrls": ["images/cw-.../001-.../01.webp", "..."]
-}
+```bash
+mkdir -p /tmp/site && ln -s "$PWD/out" /tmp/site/gt7-tunes
+(cd /tmp/site && python3 -m http.server 8000)   # open http://localhost:8000/gt7-tunes/
 ```
 
-- `id` is used for deduplication; posts are shown in array order (newest first).
-- `tags` drive the filter chips. New tags appear automatically; their category is
-  decided by the rules in the `categorize()` function near the top of the script
-  in `index.html`. Makes are matched against an explicit `MAKES` allow-list of GT7
-  brands; anything not matched by any rule falls into **Other**. When a new GT7
-  brand appears in the data, add it to `MAKES`. To recategorize a tag, edit the
-  sets there — the data file is never modified by the app.
-- `imageUrls` should be repo-relative paths under `images/`.
+## Deploy
 
-To add or edit tunes, change `data/posts.json` directly. No build step or
-regeneration is needed — reload the page.
+Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the static
+export and publishes it to GitHub Pages.
+
+> **One-time setup:** in repo **Settings → Pages → Source**, select
+> **"GitHub Actions"** (instead of "Deploy from a branch"). The site is then
+> served from the workflow build.
+
+Every pull request gets a live preview at
+`https://cxs7700.github.io/gt7-tunes/pr-preview/pr-<N>/` (built with a per-PR
+base path), removed automatically when the PR closes.
+
+## Filtering
+
+Tags are grouped into categories — **PP, Class, Drivetrain, Track, Make/Brand,
+Rating, Setup, Other** — with **OR within a category, AND across categories**,
+combined with full-text search. Categorization (incl. an explicit GT7 `MAKES`
+allow-list) lives in `lib/categorize.ts`; the data file is never modified.
+
+## Updating tunes
+
+Edit `data/posts.json` (array of `{ id, title, date, body, url, tags,
+imageUrls }`) and add images under `public/images/`. New tags are categorized
+automatically; add new GT7 brands to `MAKES` in `lib/categorize.ts`. Run
+`npm run validate-data` to check integrity, then rebuild.
