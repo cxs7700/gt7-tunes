@@ -5,12 +5,15 @@ import { useRouter } from 'next/navigation';
 import type { Post, SortMode } from '@/lib/types';
 import { buildCategorized, orderedCategories } from '@/lib/categorize';
 import { getFiltered } from '@/lib/filter';
-import { decodeState, encodeState, SCROLL_KEY } from '@/lib/urlState';
+import { decodeState, encodeState, SCROLL_KEY, DEFAULT_PAGE_SIZE } from '@/lib/urlState';
 import TuneGrid from './TuneGrid';
 import FilterModal from './FilterModal';
+import Pagination from './Pagination';
 
 function readInitial() {
-  if (typeof window === 'undefined') return { search: '', sort: 'newest' as SortMode, filters: [] as string[] };
+  if (typeof window === 'undefined') {
+    return { search: '', sort: 'newest' as SortMode, filters: [] as string[], page: 1, size: DEFAULT_PAGE_SIZE };
+  }
   return decodeState(window.location.search);
 }
 
@@ -26,6 +29,8 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   const [search, setSearch] = useState(init.search);
   const [sort, setSort] = useState<SortMode>(init.sort);
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set(init.filters));
+  const [page, setPage] = useState(init.page);
+  const [size, setSize] = useState(init.size);
   const [modalOpen, setModalOpen] = useState(false);
 
   // Render nothing until mounted so the (state-independent) server HTML and the
@@ -59,17 +64,38 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   // Reflect state into the URL (replace, so no history spam) once mounted.
   useEffect(() => {
     if (!mounted) return;
-    const qs = encodeState({ search, sort, filters: [...activeFilters] });
+    const qs = encodeState({ search, sort, filters: [...activeFilters], page, size });
     if (qs === window.location.search) return;
     router.replace(`/${qs}`, { scroll: false });
-  }, [mounted, search, sort, activeFilters, router]);
+  }, [mounted, search, sort, activeFilters, page, size, router]);
 
   const filtered = useMemo(
     () => getFiltered(posts, { search, sort, activeFilters }, tagCategoryOf),
     [posts, search, sort, activeFilters, tagCategoryOf],
   );
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / size));
+  // Keep page within range if the result set shrinks.
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
+  const current = Math.min(page, totalPages);
+  const paged = useMemo(
+    () => filtered.slice((current - 1) * size, current * size),
+    [filtered, current, size],
+  );
+
+  function goToPage(p: number) {
+    setPage(p);
+    window.scrollTo({ top: 0 });
+  }
+  function changeSize(n: number) {
+    setSize(n);
+    setPage(1);
+  }
+
   function toggleFilter(tag: string) {
+    setPage(1);
     setActiveFilters((prev) => {
       const next = new Set(prev);
       if (next.has(tag)) next.delete(tag);
@@ -82,6 +108,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     setActiveFilters(new Set());
     setSearchInput('');
     setSearch('');
+    setPage(1);
   }
 
   // Skeleton shell before mount (keeps server/client first render identical).
@@ -102,13 +129,23 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             id="search"
             placeholder="Search car, track, setup…"
             value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+              setPage(1);
+            }}
           />
         </div>
         <div className="controls">
           <div className="sort-control">
             <label htmlFor="sort-select">Sort</label>
-            <select id="sort-select" value={sort} onChange={(e) => setSort(e.target.value as SortMode)}>
+            <select
+              id="sort-select"
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value as SortMode);
+                setPage(1);
+              }}
+            >
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
               <option value="title">Title A-Z</option>
@@ -145,7 +182,17 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         </div>
       )}
 
-      <TuneGrid posts={filtered} query={search} />
+      <TuneGrid posts={paged} query={search} />
+
+      {filtered.length > 0 && (
+        <Pagination
+          page={current}
+          size={size}
+          total={filtered.length}
+          onPage={goToPage}
+          onSize={changeSize}
+        />
+      )}
 
       <FilterModal
         open={modalOpen}
@@ -154,6 +201,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         initial={activeFilters}
         onApply={(f) => {
           setActiveFilters(f);
+          setPage(1);
           setModalOpen(false);
         }}
         onClose={() => setModalOpen(false)}
