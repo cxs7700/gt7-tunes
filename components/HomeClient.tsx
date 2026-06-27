@@ -1,28 +1,74 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import type { Post, SortMode } from '@/lib/types';
 import { buildCategorized, orderedCategories } from '@/lib/categorize';
 import { getFiltered } from '@/lib/filter';
+import { decodeState, encodeState, SCROLL_KEY } from '@/lib/urlState';
 import TuneGrid from './TuneGrid';
 
+function readInitial() {
+  if (typeof window === 'undefined') return { search: '', sort: 'newest' as SortMode, filters: [] as string[] };
+  return decodeState(window.location.search);
+}
+
 export default function HomeClient({ posts }: { posts: Post[] }) {
+  const router = useRouter();
   const { categorized, tagCategoryOf } = useMemo(() => buildCategorized(posts), [posts]);
   const cats = useMemo(() => orderedCategories(categorized), [categorized]);
 
-  const [searchInput, setSearchInput] = useState('');
-  const [search, setSearch] = useState('');
-  const [sort, setSort] = useState<SortMode>('newest');
-  const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
-  const [collapsedCats, setCollapsedCats] = useState<Set<string>>(
-    () => new Set(cats.slice(1)), // all collapsed except the first
-  );
+  // Initialize synchronously from the URL so the very first client paint shows
+  // the correct (filtered) layout — essential for accurate scroll restoration.
+  const [init] = useState(readInitial);
+  const [searchInput, setSearchInput] = useState(init.search);
+  const [search, setSearch] = useState(init.search);
+  const [sort, setSort] = useState<SortMode>(init.sort);
+  const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set(init.filters));
+  const [collapsedCats, setCollapsedCats] = useState<Set<string>>(() => {
+    const open = new Set<string>([cats[0]]);
+    for (const t of init.filters) {
+      const c = tagCategoryOf[t];
+      if (c) open.add(c);
+    }
+    return new Set(cats.filter((c) => !open.has(c)));
+  });
+
+  // Render nothing until mounted so the (state-independent) server HTML and the
+  // first client render match — then we render the URL-derived state in one go.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+    setMounted(true);
+  }, []);
+
+  // Once the list is on screen, restore the saved scroll position (retry across
+  // frames until the page is tall enough for the target to stick).
+  useEffect(() => {
+    if (!mounted) return;
+    const saved = parseInt(sessionStorage.getItem(SCROLL_KEY) || '0', 10);
+    if (saved <= 0) return;
+    let tries = 0;
+    const tick = () => {
+      window.scrollTo(0, saved);
+      if (Math.abs(window.scrollY - saved) > 2 && tries++ < 40) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [mounted]);
 
   // Debounced search
   useEffect(() => {
     const t = setTimeout(() => setSearch(searchInput.trim().toLowerCase()), 200);
     return () => clearTimeout(t);
   }, [searchInput]);
+
+  // Reflect state into the URL (replace, so no history spam) once mounted.
+  useEffect(() => {
+    if (!mounted) return;
+    const qs = encodeState({ search, sort, filters: [...activeFilters] });
+    if (qs === window.location.search) return;
+    router.replace(`/${qs}`, { scroll: false });
+  }, [mounted, search, sort, activeFilters, router]);
 
   const filtered = useMemo(
     () => getFiltered(posts, { search, sort, activeFilters }, tagCategoryOf),
@@ -53,6 +99,9 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     setSearch('');
   }
 
+  // Skeleton shell before mount (keeps server/client first render identical).
+  if (!mounted) return <div id="app" className="visible" />;
+
   const hasActive = activeFilters.size > 0 || search.length > 0;
 
   return (
@@ -74,11 +123,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         <div className="controls">
           <div className="sort-control">
             <label htmlFor="sort-select">Sort</label>
-            <select
-              id="sort-select"
-              value={sort}
-              onChange={(e) => setSort(e.target.value as SortMode)}
-            >
+            <select id="sort-select" value={sort} onChange={(e) => setSort(e.target.value as SortMode)}>
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
               <option value="title">Title A-Z</option>
