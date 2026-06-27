@@ -10,50 +10,46 @@ import TuneGrid from './TuneGrid';
 import FilterModal from './FilterModal';
 import Pagination from './Pagination';
 
-function readInitial() {
-  if (typeof window === 'undefined') {
-    return { search: '', sort: 'newest' as SortMode, filters: [] as string[], page: 1, size: DEFAULT_PAGE_SIZE };
-  }
-  return decodeState(window.location.search);
-}
-
 export default function HomeClient({ posts }: { posts: Post[] }) {
   const router = useRouter();
   const { categorized, tagCategoryOf } = useMemo(() => buildCategorized(posts), [posts]);
   const cats = useMemo(() => orderedCategories(categorized), [categorized]);
 
-  // Initialize synchronously from the URL so the very first client paint shows
-  // the correct (filtered) layout — essential for accurate scroll restoration.
-  const [init] = useState(readInitial);
-  const [searchInput, setSearchInput] = useState(init.search);
-  const [search, setSearch] = useState(init.search);
-  const [sort, setSort] = useState<SortMode>(init.sort);
-  const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set(init.filters));
-  const [page, setPage] = useState(init.page);
-  const [size, setSize] = useState(init.size);
+  // Start from defaults so the server-prerendered HTML and the first client
+  // render are identical (clean hydration + fast first paint of page 1). Any URL
+  // state (e.g. returning from a tune) is applied immediately after mount.
+  const [searchInput, setSearchInput] = useState('');
+  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState<SortMode>('newest');
+  const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(DEFAULT_PAGE_SIZE);
   const [modalOpen, setModalOpen] = useState(false);
+  const [urlReady, setUrlReady] = useState(false);
 
-  // Render nothing until mounted so the (state-independent) server HTML and the
-  // first client render match — then we render the URL-derived state in one go.
-  const [mounted, setMounted] = useState(false);
+  // After mount, apply any URL state, then restore the saved scroll position
+  // (retry across frames until the page is tall enough for the target to stick).
   useEffect(() => {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
-    setMounted(true);
-  }, []);
+    const s = decodeState(window.location.search);
+    setSearchInput(s.search);
+    setSearch(s.search);
+    setSort(s.sort);
+    setActiveFilters(new Set(s.filters));
+    setSize(s.size);
+    setPage(s.page);
+    setUrlReady(true);
 
-  // Once the list is on screen, restore the saved scroll position (retry across
-  // frames until the page is tall enough for the target to stick).
-  useEffect(() => {
-    if (!mounted) return;
     const saved = parseInt(sessionStorage.getItem(SCROLL_KEY) || '0', 10);
-    if (saved <= 0) return;
-    let tries = 0;
-    const tick = () => {
-      window.scrollTo(0, saved);
-      if (Math.abs(window.scrollY - saved) > 2 && tries++ < 40) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }, [mounted]);
+    if (saved > 0) {
+      let tries = 0;
+      const tick = () => {
+        window.scrollTo(0, saved);
+        if (Math.abs(window.scrollY - saved) > 2 && tries++ < 40) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }, []);
 
   // Debounced search
   useEffect(() => {
@@ -61,13 +57,13 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     return () => clearTimeout(t);
   }, [searchInput]);
 
-  // Reflect state into the URL (replace, so no history spam) once mounted.
+  // Reflect state into the URL (replace, no history spam) once the URL is read.
   useEffect(() => {
-    if (!mounted) return;
+    if (!urlReady) return;
     const qs = encodeState({ search, sort, filters: [...activeFilters], page, size });
     if (qs === window.location.search) return;
     router.replace(`/${qs}`, { scroll: false });
-  }, [mounted, search, sort, activeFilters, page, size, router]);
+  }, [urlReady, search, sort, activeFilters, page, size, router]);
 
   const filtered = useMemo(
     () => getFiltered(posts, { search, sort, activeFilters }, tagCategoryOf),
@@ -110,9 +106,6 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     setSearch('');
     setPage(1);
   }
-
-  // Skeleton shell before mount (keeps server/client first render identical).
-  if (!mounted) return <div id="app" className="visible" />;
 
   const hasActive = activeFilters.size > 0 || search.length > 0;
 
