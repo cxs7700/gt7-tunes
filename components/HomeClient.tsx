@@ -1,60 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Post, SortMode } from '@/lib/types';
 import { buildCategorized, orderedCategories } from '@/lib/categorize';
 import { getFiltered } from '@/lib/filter';
-import { withBasePath } from '@/lib/basePath';
-
-function Highlight({ text, query }: { text: string; query: string }) {
-  if (!query) return <>{text}</>;
-  const parts: React.ReactNode[] = [];
-  const lower = text.toLowerCase();
-  const q = query.toLowerCase();
-  let i = 0;
-  let key = 0;
-  for (;;) {
-    const found = lower.indexOf(q, i);
-    if (found === -1) {
-      parts.push(text.slice(i));
-      break;
-    }
-    if (found > i) parts.push(text.slice(i, found));
-    parts.push(<mark key={key++}>{text.slice(found, found + q.length)}</mark>);
-    i = found + q.length;
-  }
-  return <>{parts}</>;
-}
-
-function PostBody({ body, query }: { body: string; query: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [clamped, setClamped] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (el && !expanded && el.scrollHeight > 300) setClamped(true);
-  }, [expanded, body]);
-
-  return (
-    <>
-      <div
-        ref={ref}
-        className={'post-body' + (expanded ? ' expanded' : clamped ? ' clamped' : '')}
-      >
-        <Highlight text={body} query={query} />
-      </div>
-      {clamped && (
-        <button
-          className="expand-btn"
-          onClick={() => setExpanded((v) => !v)}
-        >
-          {expanded ? 'Show less' : 'Show more'}
-        </button>
-      )}
-    </>
-  );
-}
+import TuneGrid from './TuneGrid';
 
 export default function HomeClient({ posts }: { posts: Post[] }) {
   const { categorized, tagCategoryOf } = useMemo(() => buildCategorized(posts), [posts]);
@@ -67,7 +17,6 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   const [collapsedCats, setCollapsedCats] = useState<Set<string>>(
     () => new Set(cats.slice(1)), // all collapsed except the first
   );
-  const [lbIndex, setLbIndex] = useState<number | null>(null);
 
   // Debounced search
   useEffect(() => {
@@ -79,36 +28,6 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     () => getFiltered(posts, { search, sort, activeFilters }, tagCategoryOf),
     [posts, search, sort, activeFilters, tagCategoryOf],
   );
-
-  // Flat image list + per-card offsets for lightbox navigation across visible images.
-  const flatImages = useMemo(
-    () => filtered.flatMap((p) => p.imageUrls.map((u) => withBasePath(u))),
-    [filtered],
-  );
-  const offsets = useMemo(() => {
-    let o = 0;
-    return filtered.map((p) => {
-      const start = o;
-      o += p.imageUrls.length;
-      return start;
-    });
-  }, [filtered]);
-
-  // Lightbox keyboard nav
-  useEffect(() => {
-    if (lbIndex === null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLbIndex(null);
-      else if (e.key === 'ArrowLeft') setLbIndex((i) => (i === null ? i : (i - 1 + flatImages.length) % flatImages.length));
-      else if (e.key === 'ArrowRight') setLbIndex((i) => (i === null ? i : (i + 1) % flatImages.length));
-    };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [lbIndex, flatImages.length]);
 
   function toggleFilter(tag: string) {
     setActiveFilters((prev) => {
@@ -204,75 +123,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         })}
       </div>
 
-      <div className="posts-grid">
-        {filtered.length === 0 ? (
-          <div className="no-results">No tunes match your filters.</div>
-        ) : (
-          filtered.map((post, idx) => (
-            <div className="post-card" key={post.id}>
-              <div className="post-header">
-                <div className="post-title">
-                  <a href={post.url} target="_blank" rel="noopener noreferrer">
-                    <Highlight text={post.title} query={search} />
-                  </a>
-                </div>
-                <div className="post-date">{post.date}</div>
-              </div>
-              <PostBody body={post.body} query={search} />
-              {post.tags.length > 0 && (
-                <div className="post-tags">
-                  {post.tags.map((t) => (
-                    <span className="post-tag" key={t}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              )}
-              {post.imageUrls.length > 0 && (
-                <div className="post-images">
-                  {post.imageUrls.map((url, j) => (
-                    <img
-                      key={url}
-                      src={withBasePath(url)}
-                      loading="lazy"
-                      alt=""
-                      onClick={() => setLbIndex(offsets[idx] + j)}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-
-      {lbIndex !== null && (
-        <div className="lightbox open" onClick={() => setLbIndex(null)}>
-          <button className="lightbox-close" onClick={() => setLbIndex(null)}>
-            ×
-          </button>
-          <button
-            className="lightbox-nav prev"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLbIndex((i) => (i === null ? i : (i - 1 + flatImages.length) % flatImages.length));
-            }}
-          >
-            ‹
-          </button>
-          <button
-            className="lightbox-nav next"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLbIndex((i) => (i === null ? i : (i + 1) % flatImages.length));
-            }}
-          >
-            ›
-          </button>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={flatImages[lbIndex]} alt="" onClick={(e) => e.stopPropagation()} />
-        </div>
-      )}
+      <TuneGrid posts={filtered} query={search} />
     </div>
   );
 }
