@@ -7,6 +7,7 @@ import { buildCategorized, orderedCategories } from '@/lib/categorize';
 import { getFiltered } from '@/lib/filter';
 import { decodeState, encodeState, SCROLL_KEY } from '@/lib/urlState';
 import TuneGrid from './TuneGrid';
+import FilterModal from './FilterModal';
 
 function readInitial() {
   if (typeof window === 'undefined') return { search: '', sort: 'newest' as SortMode, filters: [] as string[] };
@@ -25,14 +26,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   const [search, setSearch] = useState(init.search);
   const [sort, setSort] = useState<SortMode>(init.sort);
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set(init.filters));
-  const [collapsedCats, setCollapsedCats] = useState<Set<string>>(() => {
-    const open = new Set<string>([cats[0]]);
-    for (const t of init.filters) {
-      const c = tagCategoryOf[t];
-      if (c) open.add(c);
-    }
-    return new Set(cats.filter((c) => !open.has(c)));
-  });
+  const [modalOpen, setModalOpen] = useState(false);
 
   // Render nothing until mounted so the (state-independent) server HTML and the
   // first client render match — then we render the URL-derived state in one go.
@@ -84,15 +78,6 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     });
   }
 
-  function toggleCat(cat: string) {
-    setCollapsedCats((prev) => {
-      const next = new Set(prev);
-      if (next.has(cat)) next.delete(cat);
-      else next.add(cat);
-      return next;
-    });
-  }
-
   function clearAll() {
     setActiveFilters(new Set());
     setSearchInput('');
@@ -129,6 +114,10 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
               <option value="title">Title A-Z</option>
             </select>
           </div>
+          <button className="btn secondary more-filters-btn" onClick={() => setModalOpen(true)}>
+            Filters
+            {activeFilters.size > 0 && <span className="badge">{activeFilters.size}</span>}
+          </button>
           {hasActive && (
             <button className="btn secondary" onClick={clearAll}>
               Clear
@@ -140,35 +129,35 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         </span>
       </div>
 
-      <div className="filters">
-        {cats.map((cat) => {
-          const collapsed = collapsedCats.has(cat);
-          const selInCat = categorized[cat].filter((t) => activeFilters.has(t.tag)).length;
-          return (
-            <div key={cat} className={'filter-group' + (collapsed ? ' collapsed' : '')}>
-              <div className="filter-group-header" onClick={() => toggleCat(cat)}>
-                <span className="label">{cat}</span>
-                {selInCat > 0 && <span className="sel-count">{selInCat}</span>}
-                <span className="filter-toggle" aria-hidden="true" />
-              </div>
-              <div className="filter-chips">
-                {categorized[cat].map(({ tag, count }) => (
-                  <button
-                    key={tag}
-                    className={'chip' + (activeFilters.has(tag) ? ' active' : '')}
-                    onClick={() => toggleFilter(tag)}
-                  >
-                    {tag}
-                    <span className="chip-count">{count}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {activeFilters.size > 0 && (
+        <div className="active-filters">
+          {[...activeFilters].map((t) => (
+            <button
+              key={t}
+              className="active-chip"
+              onClick={() => toggleFilter(t)}
+              aria-label={`Remove filter ${t}`}
+            >
+              {t}
+              <span className="active-chip-x" aria-hidden="true">×</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       <TuneGrid posts={filtered} query={search} />
+
+      <FilterModal
+        open={modalOpen}
+        cats={cats}
+        categorized={categorized}
+        initial={activeFilters}
+        onApply={(f) => {
+          setActiveFilters(f);
+          setModalOpen(false);
+        }}
+        onClose={() => setModalOpen(false)}
+      />
     </div>
   );
 }
