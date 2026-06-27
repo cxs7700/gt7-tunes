@@ -1,0 +1,224 @@
+2:I[4565,["52","static/chunks/app/tune/%5Bid%5D/page-878d10cbc1a78a1c.js"],"default"]
+4:I[2152,["52","static/chunks/app/tune/%5Bid%5D/page-878d10cbc1a78a1c.js"],"default"]
+5:I[4707,[],""]
+7:I[6423,[],""]
+8:I[2972,["972","static/chunks/972-f92f2a3d665546d0.js","185","static/chunks/app/layout-b5116361e3ccf389.js"],""]
+3:T4397,Abarth 1500 Biposto Bertone B.A.T 1 '52 - FR - 500PP - Sport Hard/Medium Tires - Nordschleife - 1.50
+Abarth 595 SS '70 - RR - 460PP - Comfort Medium & Soft Tires - Alsace Mission - SWAP - 1.54
+Alfa Romeo 155 2.5 V6 TI '93 - Gr4 - 4WD - BOP - Racing Tires - All Track - 1.50
+Alfa Romeo 4C '14 - MR - 700PP - Racing Medium Tires - All Track - SWAP - 1.50
+Alfa Romeo Giulia Sprint GT Veloce '88 - FR - Sport Soft Tires - Nordschleife - SWAP - 1.54
+Alpine A110 '17 - MR - 600PP - Sport Hard Tires - Tokyo Rain Event -SWAP - 1.50
+Alpine A110 '17 - MR - 600PP - Sport Medium Tires - All Track -SWAP - 1.50
+Alpine A110 '17 - MR - 700PP - Racing Hard Tires - All Track -SWAP - 1.50
+Alpine A110 '17 - MR - 700PP - Racing Soft Tires - Deep Forest - 1.52
+Alpine A110 '72 - RR - 600PP - Sport Hard Tires - Tokyo Rain Event - 1.50
+Alpine A220 Race Car '68 - MR -600PP - Sport Hard Tires - Tokyo Rain - 1.49
+Amuse S2000 GT1 Turbo - FR - 700PP - Racing Hard Tires - All Track - SWAP - 1.52
+Amuse S2000 GT1 Turbo - FR - 800PP - Racing Soft Tires - All Track - SWAP - 1.52
+Aston Martin DB11 '16 - FR - 700PP - Racing Hard Tires - All Track - 1.52
+Aston Martin DB3S '53 - FR - 460PP - Comfort Medium & Soft - Alsace mission - 1.50
+Aston Martin V12 Vantage GT3 '12 - Gr3 - FR - BOP - Racing Tires - All Track - 1.50
+Audi R18 '16 - 4WD - 900PP - Racing Soft Tires - All Track - 1.52
+Audi R8 Coupé V10 plus '16 - MR - 700PP - Racing Hard Tires - Nordschleife - 1.50
+Audi R8 LMS '15 - MR - BOP - Racing Tires - All Track - 1.50
+Audi TT Coupé 3.2 quattro '03 - 4WD - 600PP - Sport Medium Tires - All Track - 1.54
+Audi TTS Coupé '14 - 4WD - 600PP - Sport medium Tires - Nordschleife - 1.50
+Audi TTS Coupé '14 - 4WD - 700PP - Racing Hard Tires - Nordschleife - 1.50
+Autobianchi A112 Abarth '85 - FF - 450PP - Comfort Soft - All Track - 1.52
+BAC Mono '16 - MR - 700PP - Sport Soft Tires - Mission Trial Mountain - 1.50
+BMW 3.0 CSL '73 - FR - 700PP - Racing Soft Tires - All Track - SWAP - 1.49
+BMW M2 Competition '18 - FR - 700PP - Racing Hard Tires - Nordschleife - 1.52
+BMW M3 '07 - FR - 600PP - Sport Medium tires - All track - 1.49
+BMW M3 GT '11 Gr3 - FR - BOP - Racing Tires - All Track - 1.50
+BMW M3 Sport Evolution '89 - FR - 700PP - Racing Hard Tires - All Track - 1.52
+BMW Z4 GT3 '11 - FR - Gr3 - Racing Soft Tires - All Track - 1.54
+BMW Z8 '01 - FR - 700PP - Racing Hard Tires - All Track - 1.52
+Bugatti Veyron Gr4 - Gr4 - 4WD - BOP - Racing Tires - All Track - 1.50
+Chevrolet C7 - Gr3 - FR - BOP - Racing Tires - All Track - 1.50
+Chevrolet Camaro SS '16 - FR - 600PP - Sport Medium Tires - All Track - 1.54
+Chevrolet Camaro Z28 '69 - FR - 600PP - Sport Hard Tires - Tokyo - 1.54
+Chevrolet Camaro ZL1 1l Package '18 - FR - 700PP - Racing Hard Tires - All Track - 1.52
+Chevrolet Chevelle SS 454 '70 - FR - 600PP - Sport Medium Tires - All tracks- 1.54
+Chevrolet Corvette (C2) '63 - FR - 600PP - Sport Medium Tires - All track - 1.50
+Chevrolet Corvette C7 '14 - FR - 700PP - Racing Hard Tires - All track - 1.50
+Chevrolet Corvette Convertible (C3) '69 - FR - 500PP - Sport Hard Tires - All Track - 1.52
+Chevrolet Corvette Stingray Racer Concept '59 - FR - 600PP - Racing Hard - All Track - 1.54
+Chevrolet Corvette ZR1 (C4) '89 - FR - 700PP - Racing Hard Tires - All track - 1.49
+Chevrolet Corvette ZR1 (C6) '09 - FR - 700PP - Racing Hard Tires - Nordschleife - 1.52
+Citroen DS 21 Pallas '70 - FF - 460PP - Comfort Soft Tires - Alsace mission event - 1.54
+Daihatsu Copen '02 - FF - 400PP - Comfort Soft Tires - All Track - 1.52
+Dodge Challenger R/T '70 - FR - 600PP - Sport Medium Tires - All Track - 1.54
+Dodge Challenger SRT Demon '18 - FR - 800PP - Racing Soft Tires - All Track - 1.52
+Dodge Charger SRT Hellcat '15 - FR - 700PP - Racing Hard Tires - All Track - 1.50
+Dodge Super Bee '70 - FR - 700PP - Racing Medium Tires - All Track - 1.54
+Dodge Viper SRT GT3-R '15 - FR - Gr3 - 800PP - Racing Soft Tires - All Track WTC800 - 1.50
+Dodge Viper SRT GT3-R '15 - FR - Gr3 - BOP - Racing Tires - All Track - 1.50
+Ferrari 458 Italia Gr4 - MR - 700PP - Racing Soft Tires - All Track - 1.52
+Ferrari 458 Italia Gr4 - MR - BOP - Racing Medium Tires - All Track - 1.52
+Ferrari 458 Italia GT3 '13 - Gr3 - FR - BOP - Racing Tires - All Track - 1.50
+Ferrari F50 '95 - MR - 700 PP - Racing Hard Tires - All Tracks - 1.50
+Ferrari Testarossa '91 - MR - 700PP - 700PP - Racing Medium Tires - All Track - 1.50
+Ford F-150 SVT Raptor '11 - 4WD - Sport Hard Tires - All Track - 1.54
+Ford Focus RS '18 - 4WD - 600PP - Sport Hard Tires - Tokyo Event - SWAP - 1.54
+Ford GT '17 - MR - 800PP - Racing Soft Tires - All Track - 1.54
+Ford GT LM Race Car Spec II - GR3 - MR - Maxed - Racing Soft - All Track - 1.49
+Ford Mustang - Gr3 - FR - BOP - Racing Tires - All Track - 1.52
+Ford Mustang Mach 1 '71 - FR - 600PP - Sport Medium Tires - Nordschleife - 1.52
+Ford Mustang Mach 1 '71 - FR - 700PP - Racing Medium Tires - All Track - SWAP - 1.52
+Ford Shelby GT350R '16 - FR - 700PP - Racing Hard Tires - All Track - 1.50
+Ford Sierra RS 500 Cosworth '87 - FR - 700PP - Racing Soft Tires - All Tack - 1.52
+Genesis G70 3.3T AWD P.Package '22 - 4WD - 700PP - Racing Medium Tires - All Track - 1.49
+Genesis G70 Gr4 - 4WD - BOP - Racing Tires - All Track - 1.52
+Gran Turismo F1500-A - MR - 800PP - Racing Hard Tires - Sardegna - 1.50
+GReddy Fugu Z - FR - 700PP - Racing Soft Tires - All Track - SWAP - 1.52
+Honda 2&4 - MR - 600PP - Sport Soft Tires - All Track - 1.54
+Honda Civic SIR-II (EG) '93 - FF - 550PP - Sport Hard Tires - All Track - SWAP - 1.52
+Honda Civic Type R (EK) TC - FF - 600PP - Sport Soft Tires - Tokyo rain - SWAP - 1.50
+Honda Civic Type R (FK2) '15 - FF - 550PP - Sport Hard Tires - All Track - 1.54
+Honda Civic Type R Lim Edit (FK8) '20 - FF - 550PP - Sport Hard Tires - All Track - 1.54
+Honda Civic Typer R (EK) '97 - FF - 500PP - Sport Hard Tires - All Track - 1.54
+Honda NSX Gr3 - MR - 800PP - Racing Soft Tires - Daytona road - 1.52
+Honda NSX Gr3 - MR - BOP - Racing Tires - All Track - 1.52
+Honda NSX GT500 '00 - Gr3 - MR - BOP - Racing Tires - All Track - 1.50
+Honda NSX GT500 '08 - Gr2 - MR - 900PP (Maxed) - Racing Soft Tires - All Track - 1.50
+Honda S660 '15 - MR - 400PP - Comfort Soft Tires - All track - 1.52
+Honda S800 '66 - FR - 460PP - Comfort Soft Tires - Alsace Mission - 1.54
+Jaguar F-Type Gr3 - FR - 800PP - Racing Soft Tires - All Track WTC800 - 1.50
+Jaguar F-Type Gr4 - FR - BOP - Racing Tires - All Track - 1.50
+Jaguar XJ220 '92 - MR - 700 PP - Racing HardTires - All Track - 1.49
+Jaguar XJR-9 '88 - Gr1 - MR - 900PP - Racing Soft Tires - All Track - 1.50
+KTM X-BOW R '12 - MR - 700PP - Racing Medium Tires - All Track - 1.54
+Lamborghini Countach 25th Anniversary '88 - MR - 600PP - Sport Medium Tires - All Track - 1.50
+Lamborghini Countach LP400 '74 - MR - 600PP - Sport Medium Tires - All Track - 1.54
+Lamborghini Huracán Gr4 - MR - BOP - Racing Tires - All Track - 1.50
+Lamborghini Huracan GT3 '15 - MR - 800PP - Racing Soft Tires - All Track - 1.54
+Lamborghini Miura P400 Bertone proto '67 - MR - 600PP - Sport Medium Tires - All Track - 1.54
+Lexus LC500 '17 - FR - 700PP - Racing Hard Tires - All Track - SWAP - 1.54
+Lexus RC F '14 - FR - 700PP - Racing Hard Tires - All Track - 1.50
+Lexus RC F GT3 '17 - FR - 800PP - Racing Soft Tires - All Track - 1.50
+Maserati A6GCS 53 Spyder '54 - FR - 550PP - Sport Medium Tires - All Track - 1.52
+Maserati Gran Turismo S '08 - FR - 700PP - Racing Hard Tires - All Track - 1.52
+Maserati Merak SS '80 - MR - 550PP - Sport Hard Tires - All Track - 1.52
+Mazda 787B '91 - MR - 950PP - Racing Soft Tires - All Track (grip) - 1.54
+Mazda Atenza Gr3 Road Car - FR - 700PP - Racing Medium Tires - All Track - SWAP - 1.54
+Mazda Atenza Sedan XD L Pack '15 - 4WD - 600PP - Sport Medium Tires - Nordschleife - SWAP - 1.54
+Mazda Eunos Roadster (NA) '89 - 700 - FR - 700PP - Racing Medium Tires - All Track - SWAP - 1.52
+Mazda Roadster NR-A (ND) '22 - FR - 550PP - Sport Hard Tires - Nordschleife - 1.54
+Mazda Roadster NR-A (ND) '22 - FR - 700PP - Racing Hard Tires - All Track Grip - SWAP - 1.54
+Mazda Roadster S (ND) '15 - FR - 700PP - Racing Soft Tires - All Track - SWAP - 1.52
+Mazda Roadster TC - FR - 610PP - Racing Hard Tires - Tsukuba - 1.52
+Mazda RX500 '70 - MR - 550PP - Sport Hard Tires - All Track - 1.50
+Mazda RX-7 GT-X (FC) '90 - FR - 550PP - Sport Hard Tires - Nordschleife - 1.54
+Mazda RX-7 GT-X (FC) '90 - FR - 700PP - Racing Medium Tires - All Track - SWAP - 1.50
+Mazda RX-8 Spirit R '12 - FR - 700PP - Racing Hard Tires - All Track - 1.50
+Mazda RX-8 Spirit R '12 - FR - 700PP - Racing Hard Tires - Le Mans - SWAP - 1.50
+Mazda3 Gr4 - BOP - Racing Tires - All Track - 1.50
+McLaren 650 GT3 '15 - MR - Gr3 - FR - BOP - Racing Tires - All Track - 1.50
+McLaren 650S Gr4 - MR - BOP - Racing Tires - All Track - 1.54
+McLaren MP4/4 '10 - MR - 800PP - Racing Hard Tires - All Track - 1.54
+McLaren MP4/4 '88 - MR - 950PP - Racing Soft Tires - All Track - 1.50
+Mercedes 300 SEL 6.8 AMG '71 - FR - 550PP - Sport Medium Tires - Nordschleife - 1.52
+Mercedes AMG A 45 AMG '13 - 4WD - 600PP - Sport Medium Tires - All Track - 1.50
+Mercedes AMG SLS AMG GT3 '11 - FR - 800PP - Racing Soft Tires - All Track - 1.52
+Mercedes-AMG GT S '15 - 700PP - Racing Hard Tires - All Track - 1.54
+Mercedes-AMG GT3 '20 - Gr3 - FR - 800PP - Racing Tires - WTC800 Events - 1.50
+Mercedes-Benz 190 E 2.5-16 EVO II '91 - FR - Maxed - Racing Soft Tires - Monza Event Weekly Challenge - 1.54
+Mercedes-Benz 300 SL Coupé '54 - FR - 500PP - Sport Hard Tires - Nordschleife - 1.52
+Mercedes-Benz SLR McLaren '09 - FR - 700PP - Racing Hard Tires - Nordschleife - 1.50
+Mini Cooper S '65 - FF - 460PP - Comfort Soft Tires - Alsace event - 1.52
+Mitsubishi GTO Twin Turbo '91 - 4WD - 600PP - Sport Hard Tires - Tokyo Rain event - SWAP - 1.50
+Mitsubishi GTO Twin Turbo '91 - 4WD - 700PP - Racing Hard Tires - All Track - SWAP - 1.52
+Mitsubishi GTO Twin Turbo '91 - 4WD - 700PP - Racing Medium Tires - All Track - 1.50
+Mitsubishi Lancer EVO Final '15 - 4WD - 700PP - Racing Hard Tires - Nordschleife - SWAP - 1.50
+Mitsubishi Lancer EVO Final '15 - 4WD - 700PP - Racing Medium Tires - Nordschleife - 1.50
+Mitsubishi Lancer Evo Final Gr4 - 4WD - BOP - Racing Tires - All Track - 1.54
+Mitsubishi Lancer EVO IV GSR '96 - 4WD - 600PP - Sport Medium Tires - Nordschleife - 1.54
+Mitsubishi Lancer EVO IX MR GSR '06 - 4WD - 700PP - Racing Medium Tires - All Track - 1.54
+Mitsubishi Lancer EVO VIII MR GSR '04 - 4WD - 700PP - Racing Hard Tires - Nordschleife - 1.52
+Mitsubishi Lancer EVOIII GSR '95 - 4WD - 700PP - Racing Hard tires - Nordschleife - SWAP - 1.50-
+Nismo 400R '95 - 4WD - 600PP - Sport Hard Tires - Tokyo Rain Event - 1.54
+Nissan Fairlady 240ZG (HS30) '71 - FR - 600PP - Sport Medium Tires - All Track - 1.49
+Nissan Fairlady 240ZG (HS30) '71 - FR - 700PP - Racing Hard Tires - All Track - SWAP - 1.49
+Nissan Fairlady Z 300ZX TT 2S '89 - FR - 700PP - Racing Hard Tires - Nordschleife - 1.50
+Nissan Fairlady Z 432 '69 - FR - 550PP - Sport Hard Tires - All Track - 1.54
+Nissan GT-R '17 - 4WD - 800PP - Racing Soft Tires - All Track - 1.52
+Nissan GT-R GT500 '99 - FR - Gr3 - Maxed - Racing Soft Tires - All Track - 1.49
+Nissan GT-R LM Nismo '15 - FF - 800PP - Racing Hard Tires - Sardegna - 1.52
+Nissan GT-R NISMO '17 - 4WD - 800PP - Racing Soft Tires - All Track - SWAP - 1.54
+Nissan GT-R NISMO '17 - 4WD - 800PP - Racing Soft Tires - Nordschleife - 1.54
+Nissan GT-R Prem Edit T-spec '24 - 4WD - 800PP - Racing Soft Tires - All Track - 1.52
+Nissan R32 GT-R Vspec II '94 - 4WD - 700PP - Racing Hard Tires - All Tracks - 1.52
+Nissan R32 GT-R Vspec II '94 - 4WD - 700PP - Racing Hard Tires - All Tracks - 1.52
+Nissan R33 GT-R V Spec '97 - 4WD - 700PP - Racing Soft Tires - Tsukuba - 1.50
+Nissan R33 GT-R V Spec '97 - 4WD - 800PP - Racing Soft Tires - All track - SWAP - 1.52
+Nissan R34 GT-R VSpec II Nur '02 - 4WD - 600PP - Sport Medium tires - Nordschleife - 1.49
+Nissan R92CP '92 - MR - 800PP - Racing Hard Tires - All Track - 1.52
+Nissan Sileighty '98 - FR - 600PP - Sport Medium Tires - All Track - SWAP - 1.54
+Nissan Sileighty '98 - FR - 700PP - Racing Hard Tires - All Track - SWAP - 1.52
+Nissan Silvia K's Aero (S14) '96 - FR - 700PP - Racing Medium Tires - All Track - SWAP - 1.52
+Nissan Silvia K's Type S (S14) '94 - FR - 700PP - Racing Medium Tires - All Track - SWAP - 1.52
+Nissan Silvia Qs (S13) '88 - FR - 600PP - Sport Hard Tires - Tokyo event - SWAP - 1.54
+Nissan Silvia Qs (S13) '88 - FR - 700PP - Racing Soft Tires - All Track - SWAP - 1.54
+Nissan Silvia spec-R Aero (S15) '02 - FR - 600PP - Sport Medium Tires - Nordschleife - 1.54
+Nissan Silvia spec-R Aero (S15) '02 - FR - 700PP - Racing Hard Tires - All Track - SWAP - 1.50
+Nissan Silvia Spec-R Aero (S15) TC - Gr4 - FR - BOP - Racing Tires - All Track - 1.50
+Nissan Skyline 2000 GT-R (KPGC110) '73 - FR - 500PP - Sport Hard Tires - Nordschleife - 1.54
+Nissan Skyline Hard Top 2000GT-R '70 - FR - 700PP - Racing Soft Tires - All Track - SWAP - 1.52
+Nissan Z Performance '23 - FR - 700PP - Racing Hard Tires - All Track - SWAP - 1.54
+NissanSkyline GTS-R (R31) '87 - FR - 600PP - Sport Medium Tires - All Track /Nordschleife - SWAP - 1.49
+Peugeot 208 GTI Peugeot Sport '14 - FF - 500PP - Sport Hard Tires - All Track - 1.52
+Peugeot 908 HDI FAP '10 - FR - 950PP - Racing Soft Tires - Road Atlanta - 1.52
+Peugeot RCZ Gr3 Road Car - MR - 700PP - Racing Soft tires - All Track - 1.52
+Peugeot RCZ GT Line '15 - FF - 550PP - Sport Hard Tires - All Track - 1.54
+Pontiac Firebird Trans Am '78 - FR - 700PP - Racing Medium Tires - All Track - SWAP - 1.50
+Pontiac GTO "The Judge" '69 - FR - 700PP - Racing Medium Tires - All Track - 1.54
+Porsche 911 GT3 RS (991) '16 - MR - 800PP - Racing Soft Tires - All Track - Hard level - SWAP - 1.50
+Porsche 911 Turbo (930) '81 - RR - 600PP - Sport Medium Tires - All track - 1.49
+Porsche 919 Hybrid '16 950PP - 4WD - 950PP - Racing Soft Tires - Road Atlanta - 1.52
+Porsche 959 '87 - 4WD - 600PP - Sport Medium Tires - Nordschleife - 1.50
+Porsche Cayman GT4 '16 - MR - 800PP - Racing Soft Tires - All Track - SWAP - 1.50
+Red Bull X2019 Comp - MR - 800PP - Racing Hard Tires - Sardegna - 1.54
+Red Bull X2019 Comp - MR - 950PP - Racing Medium Tires - Grip Track - 1.54
+Red Bull X2019 Comp - MR - Maxed PP - Racing Medium Tires - Interlagos Event - 1.54
+Renault 8 Gordini '66 - RR - 500PP - Sport Hard Tires - Nordschleife - 1.52
+Renault Clio V6 24V '00 - MR - 550PP - Sport Hard Tires - Nordschleife - 1.50
+Renault Clio V6 24V '00 - MR - 600PP - Sport Medium Tires - All Track - 1.54
+Renault Megane R.S Trophy '11 - FF - 600PP - Sport Medium Tires - All Track - 1.54
+Renault R.S01 '16 - MR - 800PP - Racing Soft Tires - All track - 1.54
+Renault R5 Turbo '80 - MR - 550PP - Sport Hard Tires - Nordschleife - 1.50
+Renault RS01 GT3 '16 - Gr3 - MR - 800PP - Racing Soft Tires - Daytona Road - 1.52
+Renault RS01 GT3 '16 - Gr3 - MR - BOP - Racing Tires - All Track - 1.52
+Renault Trophy '11 - Gr4 - MR - BOP - Racing Tires - All Track - 1.52
+Roadster Shop Rampage - FR - 700PP - Racing Hard Tires - All Track - 1.52
+SF23 Super Formula-Honda/Toyota '23 - MR - 950PP - St Croix - 1.50
+Shelby Cobra 427 '66 - FR - 600PP - Sport Medium Tires - All Track - 1.52
+Subaru BRZ GT300 '21 - FR - BOP - Racing Tires - All Track - 1.50
+Subaru Impreza 22B STI '98 - 4WD - 700 PP - Racing medium Tires - All Tracks - 1.49
+Subaru Impreza Rally Car '98 - 4WD - 700PP - Racing Medium Tires - All track - 1.50
+Subaru WRX STI Type S '14 - 4WD - 700PP - Racing Hard Tires - All Track - SWAP - 1.54
+Toyota Celica GT-FOUR (ST205) '94 - 4WD - 600PP - Sport Hard Tires - Tokyo - 1.50
+Toyota Celica GT-FOUR (ST205) '94 - 4WD - 600PP - Sport Medium Tires - All Track - 1.50
+Toyota Celica GT-FOUR (ST205) '94 - 4WD - 700PP - Racing Hard Tires - All Track - 1.50
+Toyota Celica GT-FOUR (ST205) '94 - 4WD - 700PP - Racing Soft Tires - Tsukuba - 1.50
+Toyota Corolla Levin 1600GT APEX (AE86) '83 - FR - 700PP - Racing Soft Tires - All Track - SWAP - 1.49
+Toyota Crown Athlete G '13 - FR - 700PP - Racing Hard Tires - Le Mans - SWAP - 1.50
+Toyota FT-1 VGT (Gr.3) - FR - 800PP - Racing Medium Tires - Sardegna event - 1.54
+Toyota GR Supra Race Car '19 - Gr4 - FR - BOP - Racing Tires - All Track - 1.52
+Toyota GR Supra Racing concept '18 - Gr3 - FR - BOP - Racing Tires - All Track - 1.50
+Toyota GR Yaris RZ HP '20 - 4WD - 700PP - Racing Hard Tires - All Track - SWAP - 1.50
+Toyota GR Yaris RZ HP '20 - 4WD - 700PP - Racing Hard Tires - All Track - SWAP - 1.52
+Toyota MR2 GT-S '97 - 600PP - MR - Sport Medium Tires - Nordschleife / Grip -1.49​
+Toyota Supra RZ '97 - 700 PP - FR - Racing Hard tires - All Track - 1.49
+TVR Tuscan Speed 6 '00 - FR - 700PP - Racing Hard Tires - All Track - 1.50
+TVR Tuscan Speed 6 '00 - FR - 700PP - Racing Hard Tires - All Track - SWAP - 1.50
+Volkswagen 1200 '66 - RR - 600PP - Sport Medium Tires - Tokyo Rain event - SWAP - 1.50
+Volkswagen Beetle Gr3 - FR - Gr3 - 800PP - Racing Soft Tires - All Track WTC800 - 1.50
+Volkswagen Golf VII GTI '14 - FF - 550PP - Sport Hard Tires - Nordschleife - 1.50
+Volkswagen Scirocco R '10 - FF - 600PP - Sport Medium Tires - All Track - 1.54
+Volvo 240 SE Estate '93 - FR - 550PP - Sport Hard Tires - Nordschleife - 1.50
+Volvo 240 SE Estate '93 - FR - 600PP - Sport Soft Tires - Tokyo rain event - SWAP - 1.54
+Volvo V40 T5 R-Design '13 - FF - 550PP - Sport Hard Tires - Nordschleife - 1.546:["id","131262987","d"]
+0:["gYgodqspdObTFYF_G8k_9",[[["",{"children":["tune",{"children":[["id","131262987","d"],{"children":["__PAGE__?{\"id\":\"131262987\"}",{}]}]}]},"$undefined","$undefined",true],["",{"children":["tune",{"children":[["id","131262987","d"],{"children":["__PAGE__",{},[["$L1",["$","main",null,{"className":"detail","children":[["$","$L2",null,{}],["$","h1",null,{"className":"detail-title","children":"CARS FROM 1.49 to 1.54"}],["$","div",null,{"className":"detail-meta","children":[["$","span",null,{"className":"post-date","children":"Jun 11, 2025"}],["$","a",null,{"className":"btn secondary","href":"https://www.patreon.com/PraianoGTSettings/posts/cars-from-1-49-1-131262987","target":"_blank","rel":"noopener noreferrer","children":"Open on Patreon ↗"}]]}],["$","div",null,{"className":"detail-body","children":"$3"}],false,["$","$L4",null,{"images":["/gt7-tunes/pr-preview/pr-3/images/cw-2026-06-21t03-57-30/489-cars-from-149-to-154-131262987/01.webp"]}]]}],null],null],null]},[null,["$","$L5",null,{"parallelRouterKey":"children","segmentPath":["children","tune","children","$6","children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined"}]],null]},[null,["$","$L5",null,{"parallelRouterKey":"children","segmentPath":["children","tune","children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined"}]],null]},[[[["$","link","0",{"rel":"stylesheet","href":"/gt7-tunes/pr-preview/pr-3/_next/static/css/8a74d5a04c8aa323.css","precedence":"next","crossOrigin":"$undefined"}]],["$","html",null,{"lang":"en","children":["$","body",null,{"children":[["$","header",null,{"className":"app-header","children":["$","div",null,{"className":"app-header-inner","children":["$","$L8",null,{"href":"/","className":"brand brand-link","children":[["$","span",null,{"className":"brand-mark","children":"GT7"}],["$","span",null,{"className":"brand-name","children":"Tunes"}]]}]}]}],["$","$L5",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":["$","main",null,{"className":"detail","children":[["$","h1",null,{"className":"detail-title","children":"Tune not found"}],["$","p",null,{"style":{"color":"var(--text-dim)","marginBottom":20},"children":"That tune doesn't exist or may have been removed."}],["$","$L8",null,{"className":"btn","href":"/","children":"← Back to tunes"}]]}],"notFoundStyles":[]}]]}]}]],null],null],["$L9",null]]]]
+9:[["$","meta","0",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","1",{"charSet":"utf-8"}],["$","title","2",{"children":"CARS FROM 1.49 to 1.54 — GT7 Tunes"}],["$","meta","3",{"name":"description","content":"A fast browser for Gran Turismo 7 car tunes."}]]
+1:null
