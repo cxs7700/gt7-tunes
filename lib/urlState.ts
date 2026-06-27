@@ -1,4 +1,4 @@
-import type { SortMode } from './types';
+import type { SortMode, ViewMode } from './types';
 
 // sessionStorage key for the list's scroll position (restored on Back).
 export const SCROLL_KEY = 'gt7-list-scroll';
@@ -23,6 +23,7 @@ export interface ListState {
   filters: string[];
   page: number;
   size: number;
+  view: ViewMode;
 }
 
 const SORTS: SortMode[] = ['newest', 'oldest', 'title'];
@@ -39,6 +40,7 @@ export function decodeState(search: string): ListState {
     filters: f ? f.split(',').map(decodeURIComponent).filter(Boolean) : [],
     page: Number.isFinite(page) && page > 0 ? page : 1,
     size: (PAGE_SIZES as readonly number[]).includes(size) ? size : DEFAULT_PAGE_SIZE,
+    view: p.get('view') === 'compact' ? 'compact' : 'detailed',
   };
 }
 
@@ -49,6 +51,7 @@ export function encodeState(s: ListState): string {
   if (s.sort !== 'newest') p.set('sort', s.sort);
   if (s.filters.length) p.set('f', s.filters.map(encodeURIComponent).join(','));
   if (s.size !== DEFAULT_PAGE_SIZE) p.set('size', String(s.size));
+  if (s.view !== 'detailed') p.set('view', s.view);
   if (s.page > 1) p.set('page', String(s.page));
   const str = p.toString();
   return str ? `?${str}` : '';

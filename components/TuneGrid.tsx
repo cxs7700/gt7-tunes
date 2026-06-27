@@ -1,7 +1,15 @@
-import type { Post } from '@/lib/types';
+import type { Post, ViewMode } from '@/lib/types';
 import TuneCard from './TuneCard';
 
-export default function TuneGrid({ posts, query = '' }: { posts: Post[]; query?: string }) {
+export default function TuneGrid({
+  posts,
+  query = '',
+  view = 'detailed',
+}: {
+  posts: Post[];
+  query?: string;
+  view?: ViewMode;
+}) {
   if (posts.length === 0) {
     return (
       <div className="posts-grid">
@@ -10,9 +18,9 @@ export default function TuneGrid({ posts, query = '' }: { posts: Post[]; query?:
     );
   }
   return (
-    <div className="posts-grid">
+    <div className={'posts-grid' + (view === 'compact' ? ' compact' : '')}>
       {posts.map((post) => (
-        <TuneCard key={post.id} post={post} query={query} />
+        <TuneCard key={post.id} post={post} query={query} view={view} />
       ))}
     </div>
   );
