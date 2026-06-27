@@ -538,3 +538,34 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   .modal-backdrop { padding: 0; }
   .modal { max-width: 100%; max-height: 100vh; height: 100vh; border-radius: 0; border: none; }
 }
+
+/* ---- Pagination ---- */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-soft);
+}
+.page-size { display: flex; align-items: center; gap: 7px; }
+.page-size label { color: var(--text-dim); font-size: 0.85rem; }
+.page-size select {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.page-range { color: var(--text-dim); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.page-nav { display: flex; align-items: center; gap: 10px; }
+.page-indicator { color: var(--text-dim); font-size: 0.85rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+@media (max-width: 600px) {
+  .pagination { justify-content: center; }
+  .page-range { order: -1; width: 100%; text-align: center; }
+}
