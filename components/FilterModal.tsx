@@ -19,6 +19,24 @@ export default function FilterModal({ open, cats, categorized, initial, onApply,
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const ref = useRef<HTMLDivElement>(null);
 
+  // Keep the modal mounted briefly while it animates out.
+  const [visible, setVisible] = useState(open);
+  const [closing, setClosing] = useState(false);
+  useEffect(() => {
+    if (open) {
+      setVisible(true);
+      setClosing(false);
+    } else if (visible) {
+      setClosing(true);
+      const t = setTimeout(() => {
+        setVisible(false);
+        setClosing(false);
+      }, 180);
+      return () => clearTimeout(t);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   // Seed staged selection + expand categories that have a selection on open.
   useEffect(() => {
     if (!open) return;
@@ -68,7 +86,7 @@ export default function FilterModal({ open, cats, categorized, initial, onApply,
     };
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!visible) return null;
 
   const toggleChip = (t: string) =>
     setStaged((p) => {
@@ -86,7 +104,7 @@ export default function FilterModal({ open, cats, categorized, initial, onApply,
     });
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className={'modal-backdrop' + (closing ? ' closing' : '')} onClick={onClose}>
       <div
         className="modal"
         role="dialog"
@@ -114,7 +132,8 @@ export default function FilterModal({ open, cats, categorized, initial, onApply,
                   {sel > 0 && <span className="sel-count">{sel}</span>}
                   <span className="filter-toggle" aria-hidden="true" />
                 </div>
-                <div className="filter-chips">
+                <div className="filter-chips-wrap">
+                  <div className="filter-chips">
                   {categorized[cat].map(({ tag, count }) => (
                     <button
                       key={tag}
@@ -125,6 +144,7 @@ export default function FilterModal({ open, cats, categorized, initial, onApply,
                       <span className="chip-count">{count}</span>
                     </button>
                   ))}
+                  </div>
                 </div>
               </div>
             );
