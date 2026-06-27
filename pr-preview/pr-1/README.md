@@ -47,9 +47,10 @@ filter categories instead of one long flat list:
 - **Class** — Gr1–Gr4, GrB, VGT, F1, Super Formula, NASCAR, etc.
 - **Drivetrain** — FF, FR, MR, RR, 4WD
 - **Track** — Nürburgring, Le Mans, Spa, Route X, …
-- **Make / Brand** — car manufacturers and tuners (collapsed by default; it's long)
+- **Make / Brand** — real GT7 manufacturers/brands (an explicit allow-list, incl. tuners like RUF, Amuse, Nismo and hot-rod shops like Chris Holstrom Concepts)
 - **Rating** — star ratings
 - **Setup** — swap, BOP, and other setup notes
+- **Other** — tags that aren't makes and don't fit elsewhere (e.g. model/generation tags like `C2`)
 
 Each chip shows how many tunes carry that tag. Filter logic:
 
@@ -80,9 +81,10 @@ Click any screenshot to open the lightbox (arrow keys / `Esc` to navigate).
 - `id` is used for deduplication; posts are shown in array order (newest first).
 - `tags` drive the filter chips. New tags appear automatically; their category is
   decided by the rules in the `categorize()` function near the top of the script
-  in `index.html`. Anything not matched by an explicit rule falls into
-  **Make / Brand**. To recategorize a tag, edit the sets there — the data file is
-  never modified by the app.
+  in `index.html`. Makes are matched against an explicit `MAKES` allow-list of GT7
+  brands; anything not matched by any rule falls into **Other**. When a new GT7
+  brand appears in the data, add it to `MAKES`. To recategorize a tag, edit the
+  sets there — the data file is never modified by the app.
 - `imageUrls` should be repo-relative paths under `images/`.
 
 To add or edit tunes, change `data/posts.json` directly. No build step or

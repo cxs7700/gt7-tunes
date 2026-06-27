@@ -423,13 +423,15 @@ mark {
   // ---------------------------------------------------------------------------
   // Tag categorization
   //
-  // Tags are grouped into the categories below for the filter UI. The rules are
-  // intentionally conservative: anything not matched by an explicit rule falls
-  // through to "Make / Brand" (the long tail of car makes & tuners). To tweak
-  // categorization, edit the sets below -- the data itself is never modified.
+  // Tags are grouped into the categories below for the filter UI. "Make / Brand"
+  // is an explicit allow-list of real GT7 manufacturers/brands (including tuners
+  // and hot-rod shops that GT7 lists as brands). Anything that isn't a make and
+  // doesn't match another rule (e.g. model/generation tags like "C2") falls into
+  // "Other", so the make list stays accurate. To tweak categorization, edit the
+  // sets below -- the data itself is never modified. Add new GT7 brands to MAKES.
   // ---------------------------------------------------------------------------
-  const CATEGORY_ORDER = ['PP', 'Class', 'Drivetrain', 'Track', 'Make / Brand', 'Rating', 'Setup'];
-  const COLLAPSED_BY_DEFAULT = new Set(['Make / Brand']);
+  const CATEGORY_ORDER = ['PP', 'Class', 'Drivetrain', 'Track', 'Make / Brand', 'Rating', 'Setup', 'Other'];
+  const COLLAPSED_BY_DEFAULT = new Set();
 
   const DRIVETRAINS = new Set(['FF', 'FR', 'MR', 'RR', '4WD']);
   const CLASSES = new Set([
@@ -445,15 +447,30 @@ mark {
     'eiger', 'all track'
   ]);
   const SETUP = new Set(['SWAP', 'swap', 'fast', 'BOP']);
+  // Real GT7 manufacturers/brands (Brand Central, Legend & tuner brands).
+  const MAKES = new Set([
+    'Abarth', 'Alfa Romeo', 'Alpine', 'AMG', 'Amuse', 'Aston Martin', 'AUDI',
+    'Autobianchi', 'BAC', 'BMW', 'Bugatti', 'Chaparral', 'CHC', 'Chevrolet',
+    'Citroen', 'Daihatsu', 'De Tomaso', 'DMC', 'Dodge', 'DS Automobiles',
+    "Exkert's Rod", 'Ferrari', 'Fiat', 'Ford', 'Garage RCR', 'Genesis',
+    'Gran Turismo', 'Greddy', 'Greening Auto Company', 'Honda', 'Hyundai',
+    'Jaguar', 'jeep', 'KTM', 'Lamborghini', 'Lancia', 'Lexus', 'Maserati',
+    'Mazda', 'McLaren', 'Mercedes', "Mine's", 'Mini', 'Mitsubishi', 'Nismo',
+    'Nissan', 'Pagani', 'Peugeot', 'Plymouth', 'Polestar', 'Pontiac', 'Porsche',
+    'Radical', 'Re Amemiya', 'Renault', 'Roadster Shop', 'RUF', 'Shelby',
+    'Subaru', 'Suzuki', 'Tesla', 'Toyota', 'TVR', 'Volkswagen', 'Volvo',
+    'Wicked Fabrication', 'Xiaomi', 'Yangwang'
+  ]);
 
   function categorize(tag) {
     if (/pp$/i.test(tag) || /^\d{3,4}$/.test(tag)) return 'PP';
-    if (/star/i.test(tag)) return 'Rating';
+    if (/^\d+\s*stars?$/i.test(tag)) return 'Rating';  // "4 stars" / "5 STARS" (not "Polestar")
     if (DRIVETRAINS.has(tag)) return 'Drivetrain';
     if (CLASSES.has(tag)) return 'Class';
     if (TRACKS.has(tag)) return 'Track';
     if (SETUP.has(tag)) return 'Setup';
-    return 'Make / Brand';
+    if (MAKES.has(tag)) return 'Make / Brand';
+    return 'Other';
   }
 
   // Sort PP tags numerically, everything else case-insensitively.
