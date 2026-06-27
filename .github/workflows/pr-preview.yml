@@ -1,10 +1,9 @@
 name: PR Preview
 
-# Deploys each pull request to a live preview at
+# Builds the Next.js static export with a per-PR base path and deploys it to
 #   https://cxs7700.github.io/gt7-tunes/pr-preview/pr-<N>/
-# The preview is written into the `pr-preview/` folder of the Pages branch
-# (main) and is removed automatically when the PR is closed or merged. The
-# site at the repository root is left untouched.
+# The preview is written into the pr-preview/ folder of the Pages branch (main)
+# and removed automatically when the PR is closed. The root site is untouched.
 
 on:
   pull_request:
@@ -23,12 +22,26 @@ jobs:
   preview:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Deploy PR preview
+      - uses: actions/setup-node@v4
+        if: github.event.action != 'closed'
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install & build (preview base path)
+        if: github.event.action != 'closed'
+        env:
+          BASE_PATH: /gt7-tunes/pr-preview/pr-${{ github.event.pull_request.number }}
+        run: |
+          npm ci
+          npm run validate-data
+          npm run build
+
+      - name: Deploy / remove PR preview
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: .
+          source-dir: out
           preview-branch: main
           umbrella-dir: pr-preview
