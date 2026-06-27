@@ -120,19 +120,24 @@ body {
 #app.visible { display: block; }
 
 /* Toolbar */
-.toolbar {
+/* Sticky controls bar: keeps search + filters + pagination visible while
+   scrolling the list. Sits just under the brand header. */
+.list-controls {
   position: sticky;
   top: var(--header-h);
   z-index: 150;
-  background: rgba(15, 16, 32, 0.88);
+  background: rgba(15, 16, 32, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  padding: 12px 0;
+  margin: 0 0 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.toolbar {
+  padding: 12px 0 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  margin-bottom: 16px;
 }
 .search-wrap { position: relative; flex: 1 1 280px; display: flex; align-items: center; }
 .search-wrap .search-icon {
@@ -179,6 +184,7 @@ body {
   border-radius: var(--radius-sm);
   background: var(--bg-elev);
   overflow: hidden;
+  flex: 0 0 auto; /* keep natural height in the flex modal body so it can scroll */
 }
 .filter-group-header {
   display: flex;
@@ -215,8 +221,24 @@ body {
 .filter-toggle::before { content: '\2212'; }                 /* minus when open */
 .filter-group.collapsed .filter-toggle::before { content: '+'; }
 .filter-group.collapsed .filter-toggle { background: var(--accent-soft); color: var(--accent); }
-.filter-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 14px 14px; }
-.filter-group.collapsed .filter-chips { display: none; }
+/* Animate expand/collapse with max-height (cap is well above any group's real
+   content, so nothing is clipped; the modal body scrolls when total content is
+   taller than the viewport). */
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 14px 14px;
+  max-height: 2000px;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.2s ease;
+}
+.filter-group.collapsed .filter-chips {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .chip {
   display: inline-flex;
   align-items: center;
@@ -520,6 +542,9 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 .modal-body {
   padding: 16px 20px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;
+  min-height: 0; /* allow the body to shrink and scroll within the modal */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -546,9 +571,7 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 24px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border-soft);
+  padding: 4px 0 12px;
 }
 .page-size { display: flex; align-items: center; gap: 7px; }
 .page-size label { color: var(--text-dim); font-size: 0.85rem; }
@@ -569,3 +592,19 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   .pagination { justify-content: center; }
   .page-range { order: -1; width: 100%; text-align: center; }
 }
+
+/* ---- Modal open/close animation ---- */
+@keyframes backdropIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes backdropOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes modalOut {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translateY(10px) scale(0.985); }
+}
+.modal-backdrop { animation: backdropIn 0.18s ease both; }
+.modal { animation: modalIn 0.2s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.modal-backdrop.closing { animation: backdropOut 0.16s ease both; }
+.modal-backdrop.closing .modal { animation: modalOut 0.16s ease both; }

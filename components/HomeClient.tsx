@@ -111,6 +111,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
 
   return (
     <div id="app" className="visible">
+      <div className="list-controls">
       <div className="toolbar">
         <div className="search-wrap">
           <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -175,8 +176,6 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         </div>
       )}
 
-      <TuneGrid posts={paged} query={search} />
-
       {filtered.length > 0 && (
         <Pagination
           page={current}
@@ -186,6 +185,9 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           onSize={changeSize}
         />
       )}
+      </div>
+
+      <TuneGrid posts={paged} query={search} />
 
       <FilterModal
         open={modalOpen}
