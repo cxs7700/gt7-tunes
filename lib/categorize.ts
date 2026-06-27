@@ -1,4 +1,5 @@
 import type { Post, Categorized, TagEntry } from './types';
+import { canonicalOf } from './tagMerge';
 
 // Tag categorization, ported verbatim from the original single-file app.
 // "Make / Brand" is an explicit allow-list of real GT7 manufacturers/brands;
@@ -70,9 +71,13 @@ export interface CategoryModel {
 
 // Tally tags across posts and group them into sorted categories.
 export function buildCategorized(posts: Post[]): CategoryModel {
+  // Count by canonical tag so spelling/case variants collapse into one chip.
   const counts = new Map<string, number>();
   for (const p of posts) {
-    for (const t of p.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
+    for (const t of p.tags) {
+      const c = canonicalOf(t);
+      counts.set(c, (counts.get(c) ?? 0) + 1);
+    }
   }
 
   const categorized: Categorized = {};

@@ -1,5 +1,6 @@
 import type { Post, FilterState } from './types';
 import { categorize } from './categorize';
+import { canonicalOf } from './tagMerge';
 
 // Pure filter+sort, ported from the original app:
 //   - within a category: OR (match any selected tag)
@@ -20,9 +21,11 @@ export function getFiltered(
       (byCat[c] ??= []).push(t);
     }
     const groups = Object.values(byCat);
-    filtered = filtered.filter((p) =>
-      groups.every((g) => g.some((t) => p.tags.includes(t))),
-    );
+    filtered = filtered.filter((p) => {
+      // Match against canonical tags so a merged chip matches any variant.
+      const canon = p.tags.map(canonicalOf);
+      return groups.every((g) => g.some((t) => canon.includes(t)));
+    });
   }
 
   const q = state.search.trim().toLowerCase();
