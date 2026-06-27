@@ -19,6 +19,8 @@ export type Categorized = Record<string, TagEntry[]>;
 
 export type SortMode = 'newest' | 'oldest' | 'title';
 
+export type ViewMode = 'detailed' | 'compact';
+
 export interface FilterState {
   search: string;
   sort: SortMode;

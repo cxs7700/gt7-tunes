@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Post, SortMode } from '@/lib/types';
+import type { Post, SortMode, ViewMode } from '@/lib/types';
 import { buildCategorized, orderedCategories } from '@/lib/categorize';
 import { getFiltered } from '@/lib/filter';
 import { decodeState, encodeState, SCROLL_KEY, DEFAULT_PAGE_SIZE } from '@/lib/urlState';
@@ -24,6 +24,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(DEFAULT_PAGE_SIZE);
+  const [view, setView] = useState<ViewMode>('detailed');
   const [modalOpen, setModalOpen] = useState(false);
   const [urlReady, setUrlReady] = useState(false);
 
@@ -38,6 +39,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     setActiveFilters(new Set(s.filters));
     setSize(s.size);
     setPage(s.page);
+    setView(s.view);
     setUrlReady(true);
 
     const saved = parseInt(sessionStorage.getItem(SCROLL_KEY) || '0', 10);
@@ -60,10 +62,10 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   // Reflect state into the URL (replace, no history spam) once the URL is read.
   useEffect(() => {
     if (!urlReady) return;
-    const qs = encodeState({ search, sort, filters: [...activeFilters], page, size });
+    const qs = encodeState({ search, sort, filters: [...activeFilters], page, size, view });
     if (qs === window.location.search) return;
     router.replace(`/${qs}`, { scroll: false });
-  }, [urlReady, search, sort, activeFilters, page, size, router]);
+  }, [urlReady, search, sort, activeFilters, page, size, view, router]);
 
   const filtered = useMemo(
     () => getFiltered(posts, { search, sort, activeFilters }, tagCategoryOf),
@@ -145,6 +147,22 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
               <option value="title">Title A-Z</option>
             </select>
           </div>
+          <div className="view-toggle" role="group" aria-label="View">
+            <button
+              className={'view-btn' + (view === 'detailed' ? ' active' : '')}
+              aria-pressed={view === 'detailed'}
+              onClick={() => setView('detailed')}
+            >
+              Detailed
+            </button>
+            <button
+              className={'view-btn' + (view === 'compact' ? ' active' : '')}
+              aria-pressed={view === 'compact'}
+              onClick={() => setView('compact')}
+            >
+              Compact
+            </button>
+          </div>
           <button className="btn secondary more-filters-btn" onClick={() => setModalOpen(true)}>
             Filters
             {activeFilters.size > 0 && <span className="badge">{activeFilters.size}</span>}
@@ -187,7 +205,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
       )}
       </div>
 
-      <TuneGrid posts={paged} query={search} />
+      <TuneGrid posts={paged} query={search} view={view} />
 
       <FilterModal
         open={modalOpen}

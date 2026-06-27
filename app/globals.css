@@ -608,3 +608,37 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 .modal { animation: modalIn 0.2s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
 .modal-backdrop.closing { animation: backdropOut 0.16s ease both; }
 .modal-backdrop.closing .modal { animation: modalOut 0.16s ease both; }
+
+/* ---- View toggle (Detailed / Compact) ---- */
+.view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg-input);
+  flex: 0 0 auto;
+}
+.view-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  padding: 8px 12px;
+  min-height: 40px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.view-btn:hover { color: var(--text); }
+.view-btn.active { background: var(--accent); color: #fff; }
+.view-btn + .view-btn { border-left: 1px solid var(--border); }
+
+/* ---- Compact view: denser grid, image + title + date only ---- */
+.posts-grid.compact {
+  grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+  gap: 14px;
+}
+.post-card.compact { padding: 12px; }
+.post-card.compact .card-cover { margin-bottom: 10px; }
+.post-card.compact .post-header { margin-bottom: 0; }
+.post-card.compact .post-title { font-size: 1rem; }
