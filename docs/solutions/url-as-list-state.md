@@ -27,6 +27,13 @@ scroll restore targets the wrong height and lands in the wrong place.
 **Verification:** filter → scroll to 2000 → open a tune → Back ⇒ filters
 restored (chip active, correct count) and `scrollY === 2000` (delta 0).
 
-**Trade-off:** the home list is now client-rendered (not in the prerendered
-HTML). Acceptable for this interactive, client-filtered view; per-tune detail
-pages remain fully prerendered.
+**First-paint refinement:** initializing synchronously from the URL forced a
+mount gate (blank shell first render) to avoid hydration mismatch, which hurt
+first paint. The better pattern (now in use): start state at **defaults** so the
+server prerenders **page 1** and the first client render matches it (clean
+hydration, content visible immediately); then apply URL state in a post-mount
+effect and run the scroll-restore retry loop. Fresh visits get instant content;
+only the "returning with a query" case briefly reflows to the filtered view,
+which is fine since Back is already fast. Verified: 25 cards present at
+`domcontentloaded`, no hydration warnings, and Back still restores
+filters + scroll exactly.
