@@ -21,7 +21,7 @@ export default function TuneCard({ post, query = '' }: { post: Post; query?: str
       />
 
       {cover && (
-        <img className="card-cover" src={withBasePath(cover)} loading="lazy" alt="" />
+        <img className="card-cover" src={withBasePath(cover)} loading="lazy" decoding="async" alt="" />
       )}
 
       <div className="post-header">

@@ -29,7 +29,7 @@ export default function DetailGallery({ images }: { images: string[] }) {
       <div className="post-images detail-images">
         {images.map((src, i) => (
           // eslint-disable-next-line @next/next/no-img-element
-          <img key={src} src={src} loading="lazy" alt="" onClick={() => setIdx(i)} />
+          <img key={src} src={src} loading="lazy" decoding="async" alt="" onClick={() => setIdx(i)} />
         ))}
       </div>
 
