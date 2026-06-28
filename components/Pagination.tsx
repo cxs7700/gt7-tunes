@@ -27,7 +27,7 @@ export default function Pagination({ page, size, total, onStep }: Props) {
         >
           ← Prev
         </button>
-        <span className="page-indicator">
+        <span key={current} className="page-indicator">
           Page {current} of {totalPages}
         </span>
         <button
