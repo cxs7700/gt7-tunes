@@ -1,6 +1,7 @@
-import type { Post } from './types';
+import type { Post, PpRange } from './types';
 import { categorize } from './categorize';
 import { canonicalOf } from './tagMerge';
+import { derivePp } from './derive';
 
 // Faceted counts for the filter modal. For each chip tag, returns how many posts
 // would match if it were selected, given the currently-staged selections in
@@ -12,6 +13,7 @@ export function facetCounts(
   posts: Post[],
   staged: Set<string>,
   tagCategoryOf: Record<string, string>,
+  pp?: PpRange | null,
 ): Map<string, number> {
   const catOf = (t: string) => tagCategoryOf[t] ?? categorize(t);
 
@@ -20,8 +22,14 @@ export function facetCounts(
   for (const t of staged) (byCat[catOf(t)] ??= []).push(t);
   const stagedCats = Object.keys(byCat);
 
-  // Each post's canonical tags, computed once.
+  // Each post's canonical tags, computed once. PP is a separate range dimension
+  // that constrains every category's base (like an always-"other" group).
   const canonPosts = posts.map((p) => p.tags.map(canonicalOf));
+  const ppOk = posts.map((p) => {
+    if (!pp) return true;
+    const v = derivePp(p);
+    return v != null && v >= pp.min && v <= pp.max;
+  });
 
   const counts = new Map<string, number>();
   const allCats = new Set(Object.values(tagCategoryOf));
@@ -30,6 +38,7 @@ export function facetCounts(
     // Base = posts matching every staged group EXCEPT this category's own.
     const otherGroups = stagedCats.filter((c) => c !== cat).map((c) => byCat[c]);
     for (let i = 0; i < posts.length; i++) {
+      if (!ppOk[i]) continue;
       const canon = canonPosts[i];
       if (!otherGroups.every((g) => g.some((t) => canon.includes(t)))) continue;
       // Tally each distinct tag of this category present in the post.

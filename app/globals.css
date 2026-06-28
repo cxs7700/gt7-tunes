@@ -304,6 +304,67 @@ body {
 .chip.disabled:hover,
 .chip:disabled:hover { border-color: var(--border-soft); color: var(--text-dim); }
 
+/* PP range slider (dual-handle) */
+.pp-range { padding: 16px 6px 8px; }
+.pp-range-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 12px;
+}
+.range-slider { position: relative; height: 34px; display: flex; align-items: center; }
+.range-rail,
+.range-fill {
+  position: absolute;
+  height: 5px;
+  border-radius: var(--pill);
+  top: 50%;
+  transform: translateY(-50%);
+}
+.range-rail { left: 0; right: 0; background: var(--border); }
+.range-fill { background: var(--accent); }
+.range-slider input[type='range'] {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 34px;
+  margin: 0;
+  background: none;
+  pointer-events: none; /* only the thumbs are interactive */
+  -webkit-appearance: none;
+  appearance: none;
+}
+.range-slider input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--accent);
+  cursor: grab;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.range-slider input[type='range']::-moz-range-thumb {
+  pointer-events: auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--accent);
+  cursor: grab;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.range-slider input[type='range']::-moz-range-track { background: none; }
+.range-slider input[type='range']:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--accent-hover);
+  outline-offset: 2px;
+}
+
 /* Post cards */
 .posts-grid {
   display: grid;

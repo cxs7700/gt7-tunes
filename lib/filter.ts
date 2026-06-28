@@ -29,6 +29,14 @@ export function getFiltered(
     });
   }
 
+  if (state.pp) {
+    const { min, max } = state.pp;
+    filtered = filtered.filter((p) => {
+      const v = derivePp(p);
+      return v != null && v >= min && v <= max;
+    });
+  }
+
   const q = state.search.trim().toLowerCase();
   if (q) {
     filtered = filtered.filter((p) => {

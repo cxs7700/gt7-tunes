@@ -1,8 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Categorized, Post } from '@/lib/types';
+import type { Categorized, Post, PpRange } from '@/lib/types';
 import { facetCounts } from '@/lib/facets';
+import RangeSlider from './RangeSlider';
+
+const PP_STEP = 10;
+const isFullRange = (r: PpRange, b: PpRange) => r.min <= b.min && r.max >= b.max;
 
 interface Props {
   open: boolean;
@@ -10,8 +14,10 @@ interface Props {
   categorized: Categorized;
   posts: Post[];
   tagCategoryOf: Record<string, string>;
+  ppBounds: PpRange;
   initial: Set<string>;
-  onApply: (filters: Set<string>) => void;
+  initialPp: PpRange | null;
+  onApply: (filters: Set<string>, pp: PpRange | null) => void;
   onClose: () => void;
 }
 
@@ -23,18 +29,24 @@ export default function FilterModal({
   categorized,
   posts,
   tagCategoryOf,
+  ppBounds,
   initial,
+  initialPp,
   onApply,
   onClose,
 }: Props) {
   const [staged, setStaged] = useState<Set<string>>(() => new Set(initial));
+  const [stagedPp, setStagedPp] = useState<PpRange>(() => initialPp ?? ppBounds);
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const ref = useRef<HTMLDivElement>(null);
 
-  // Contextual per-chip counts given the OTHER categories' staged selections.
+  const ppActive = !isFullRange(stagedPp, ppBounds);
+
+  // Contextual per-chip counts given the OTHER categories' staged selections and
+  // the staged PP range.
   const facets = useMemo(
-    () => facetCounts(posts, staged, tagCategoryOf),
-    [posts, staged, tagCategoryOf],
+    () => facetCounts(posts, staged, tagCategoryOf, ppActive ? stagedPp : null),
+    [posts, staged, tagCategoryOf, ppActive, stagedPp],
   );
 
   // Keep the modal mounted briefly while it animates out.
@@ -59,6 +71,7 @@ export default function FilterModal({
   useEffect(() => {
     if (!open) return;
     setStaged(new Set(initial));
+    setStagedPp(initialPp ?? ppBounds);
     const openCats = new Set<string>([cats[0]]);
     for (const t of initial) {
       for (const c of cats) {
@@ -142,15 +155,37 @@ export default function FilterModal({
         <div className="modal-body">
           {cats.map((cat) => {
             const col = collapsed.has(cat);
-            const sel = categorized[cat].filter((e) => staged.has(e.tag)).length;
+            const isPp = cat === 'PP';
+            const sel = isPp
+              ? ppActive
+                ? 1
+                : 0
+              : categorized[cat].filter((e) => staged.has(e.tag)).length;
             return (
               <div key={cat} className={'filter-group' + (col ? ' collapsed' : '')}>
                 <div className="filter-group-header" onClick={() => toggleCat(cat)}>
-                  <span className="label">{cat}</span>
+                  <span className="label">{isPp ? 'PP (Performance Points)' : cat}</span>
                   {sel > 0 && <span className="sel-count">{sel}</span>}
                   <span className="filter-toggle" aria-hidden="true" />
                 </div>
                 <div className="filter-chips-wrap">
+                  {isPp ? (
+                    <div className="pp-range">
+                      <div className="pp-range-values">
+                        <span>{stagedPp.min} PP</span>
+                        <span>{stagedPp.max} PP</span>
+                      </div>
+                      <RangeSlider
+                        min={ppBounds.min}
+                        max={ppBounds.max}
+                        step={PP_STEP}
+                        valueMin={stagedPp.min}
+                        valueMax={stagedPp.max}
+                        onChange={(lo, hi) => setStagedPp({ min: lo, max: hi })}
+                        label="PP"
+                      />
+                    </div>
+                  ) : (
                   <div className="filter-chips">
                   {categorized[cat].map(({ tag }) => {
                     const on = staged.has(tag);
@@ -171,6 +206,7 @@ export default function FilterModal({
                     );
                   })}
                   </div>
+                  )}
                 </div>
               </div>
             );
@@ -179,13 +215,24 @@ export default function FilterModal({
 
         <div className="modal-footer">
           <span className="modal-footer-count">
-            {staged.size > 0 ? `${staged.size} selected` : 'No filters selected'}
+            {staged.size + (ppActive ? 1 : 0) > 0
+              ? `${staged.size + (ppActive ? 1 : 0)} selected`
+              : 'No filters selected'}
           </span>
           <div className="modal-footer-actions">
-            <button className="btn secondary" onClick={() => setStaged(new Set())}>
+            <button
+              className="btn secondary"
+              onClick={() => {
+                setStaged(new Set());
+                setStagedPp(ppBounds);
+              }}
+            >
               Clear
             </button>
-            <button className="btn" onClick={() => onApply(new Set(staged))}>
+            <button
+              className="btn"
+              onClick={() => onApply(new Set(staged), ppActive ? stagedPp : null)}
+            >
               Apply Filters
             </button>
           </div>

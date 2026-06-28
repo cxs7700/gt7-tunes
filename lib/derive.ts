@@ -18,6 +18,19 @@ export function derivePp(post: Post): number | null {
   return null;
 }
 
+// Min/max PP across all posts that have one — bounds for the range slider.
+export function ppBounds(posts: Post[]): { min: number; max: number } {
+  let min = Infinity;
+  let max = -Infinity;
+  for (const p of posts) {
+    const v = derivePp(p);
+    if (v == null) continue;
+    if (v < min) min = v;
+    if (v > max) max = v;
+  }
+  return Number.isFinite(min) ? { min, max } : { min: 0, max: 0 };
+}
+
 // Star rating (1–5). Prefer an explicit Rating tag; fall back to the body, where
 // Praiano's posts reliably open with e.g. "5 STARS CAR SETUP". This lifts
 // coverage from ~25% (tags only) to ~91%.
