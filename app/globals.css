@@ -633,6 +633,50 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 .detail-images { margin-top: 18px; }
 .detail-images img { cursor: zoom-in; }
 
+/* ---- Similar tunes rail ---- */
+.related { margin-top: 32px; }
+.related-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; }
+.related-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 220px;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.related-card {
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  transition: border-color 0.15s, transform 0.08s;
+}
+.related-card:hover { border-color: var(--accent); }
+.related-card:active { transform: translateY(1px); }
+.related-card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 6px;
+  background: var(--bg-input);
+}
+.related-card-title {
+  font-size: 0.85rem;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* ---- More Filters button + active filter summary ---- */
 .more-filters-btn { display: inline-flex; align-items: center; gap: 7px; }
 .more-filters-btn .badge {

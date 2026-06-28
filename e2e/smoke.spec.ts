@@ -96,6 +96,18 @@ test('lightbox dots match the image count and track position', async ({ page }) 
   await expect(page.locator('.lb-dot').nth(1)).toHaveClass(/active/);
 });
 
+test('detail page shows a Similar tunes rail that navigates', async ({ page }) => {
+  await page.goto(HOME);
+  await page.locator('.card-overlay-link').first().click();
+  await expect(page).toHaveURL(/\/tune\/\d+\//);
+  const rail = page.locator('.related .related-card');
+  await expect(rail.first()).toBeVisible();
+  const before = new URL(page.url()).pathname;
+  await rail.first().click();
+  await expect(page).toHaveURL(/\/tune\/\d+\//);
+  expect(new URL(page.url()).pathname).not.toBe(before);
+});
+
 test('favorites persist and the Saved view filters to them', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.post-card .card-fav').first().click();
