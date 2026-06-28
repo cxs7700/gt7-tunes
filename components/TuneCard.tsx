@@ -5,10 +5,11 @@ import type { Post, ViewMode } from '@/lib/types';
 import { withBasePath } from '@/lib/basePath';
 import { saveListScroll } from '@/lib/urlState';
 import Highlight from './Highlight';
+import SpecChips from './SpecChips';
 
 // A card whose whole surface navigates to the tune's detail page (stretched-link
-// pattern, so no nested <a>). Detailed view also shows body preview and tags;
-// the photo count and "Open on Patreon" button live on the detail page only.
+// pattern, so no nested <a>). Detailed view also shows headline spec chips, body
+// preview, and tags; the "Open on Patreon" button lives on the detail page only.
 // Compact view shows only image + title + date.
 export default function TuneCard({
   post,
@@ -44,6 +45,8 @@ export default function TuneCard({
 
       {!compact && (
         <>
+          <SpecChips post={post} />
+
           <div className="post-body-preview">
             <Highlight text={post.body} query={query} />
           </div>

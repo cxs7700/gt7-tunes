@@ -26,7 +26,7 @@ export interface ListState {
   view: ViewMode;
 }
 
-const SORTS: SortMode[] = ['newest', 'oldest', 'title'];
+const SORTS: SortMode[] = ['newest', 'pp-desc', 'pp-asc', 'rating'];
 
 export function decodeState(search: string): ListState {
   const p = new URLSearchParams(search);
