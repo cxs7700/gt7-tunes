@@ -144,6 +144,19 @@ test('detail page shows a Similar tunes rail that navigates', async ({ page }) =
   expect(new URL(page.url()).pathname).not.toBe(before);
 });
 
+test('detail page Share button copies the tune URL', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.goto(HOME);
+  await page.locator('.card-overlay-link').first().click();
+  await expect(page).toHaveURL(/\/tune\/\d+\//);
+  const share = page.locator('.share-btn');
+  await expect(share).toBeVisible();
+  await share.click(); // no Web Share API in headless → clipboard fallback
+  await expect(share).toContainText('Copied!');
+  const clip = await page.evaluate(() => navigator.clipboard.readText());
+  expect(clip).toContain('/tune/');
+});
+
 test('compare: pin two tunes and open the side-by-side modal', async ({ page }) => {
   await page.goto(HOME);
   const cards = page.locator('.post-card');
