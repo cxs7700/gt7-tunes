@@ -6,6 +6,7 @@ import BackButton from '@/components/BackButton';
 import DetailGallery from '@/components/DetailGallery';
 import SpecChips from '@/components/SpecChips';
 import FavoriteButton from '@/components/FavoriteButton';
+import CompareButton from '@/components/CompareButton';
 import RelatedTunes from '@/components/RelatedTunes';
 import { relatedPosts } from '@/lib/related';
 
@@ -33,6 +34,7 @@ export default function TunePage({ params }: { params: { id: string } }) {
       <div className="detail-meta">
         <span className="post-date">{post.date}</span>
         <FavoriteButton id={post.id} className="detail-fav" />
+        <CompareButton id={post.id} className="detail-fav" />
         <a className="btn secondary" href={post.url} target="_blank" rel="noopener noreferrer">
           Open on Patreon ↗
         </a>

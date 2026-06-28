@@ -597,11 +597,16 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 .fav-btn:active .fav-icon { transform: scale(0.88); }
 .fav-btn.on { color: #ffd45e; }
 .fav-btn.on .fav-icon { fill: #ffd45e; stroke: #ffd45e; }
-.card-fav {
+/* Card action buttons (compare + favorite) stacked top-right, above the overlay. */
+.card-actions {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+.card-action-btn {
   width: 38px;
   height: 38px;
   border-radius: var(--pill);
@@ -612,6 +617,32 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 }
 .card-fav.on { color: #ffd45e; }
 
+/* Compare toggle. */
+.cmp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-dim);
+}
+.cmp-icon {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  transition: fill 0.12s, stroke 0.12s, transform 0.08s;
+}
+.cmp-btn:active .cmp-icon { transform: scale(0.88); }
+.cmp-btn.on { color: var(--accent); }
+.cmp-btn.on .cmp-icon { fill: var(--accent); stroke: var(--accent); }
+.cmp-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.card-action-btn.cmp-btn.on { color: #fff; }
+.card-action-btn.cmp-btn.on .cmp-icon { fill: var(--accent); stroke: var(--accent); }
+
 /* "Saved" view toggle in the controls. */
 .saved-toggle { display: inline-flex; align-items: center; gap: 7px; }
 .saved-toggle .fav-icon { width: 16px; height: 16px; }
@@ -619,6 +650,70 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 .saved-toggle.active .fav-icon { fill: #ffd45e; stroke: #ffd45e; }
 
 .empty-state { color: var(--text-dim); text-align: center; padding: 48px 16px; font-size: 1rem; }
+
+/* ---- Compare ---- */
+.compare-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+}
+.compare-bar-label { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+.compare-bar-actions { display: flex; gap: 8px; }
+
+.compare-modal { max-width: 880px; }
+.compare-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--border-soft);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.compare-corner,
+.compare-head,
+.compare-label,
+.compare-cell { background: var(--bg-card); padding: 10px 12px; }
+.compare-head { position: relative; background: var(--bg-elev); }
+.compare-head-link { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--text); }
+.compare-head-link img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 6px;
+  background: var(--bg-input);
+}
+.compare-head-title {
+  font-size: 0.8rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.compare-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+.compare-label { font-size: 0.8rem; color: var(--text-dim); font-weight: 600; display: flex; align-items: center; }
+.compare-cell { font-size: 0.9rem; display: flex; align-items: center; font-variant-numeric: tabular-nums; }
+.compare-patreon { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
 .card-cover {
   width: 100%;
   aspect-ratio: 16 / 9;
