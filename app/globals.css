@@ -295,6 +295,14 @@ body {
 .chip.active { background: var(--tag-active); border-color: var(--tag-active); color: #fff; }
 .chip .chip-count { opacity: 0.65; font-size: 0.82em; font-variant-numeric: tabular-nums; }
 .chip.active .chip-count { opacity: 0.85; }
+.chip.disabled,
+.chip:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+  border-color: var(--border-soft);
+}
+.chip.disabled:hover,
+.chip:disabled:hover { border-color: var(--border-soft); color: var(--text-dim); }
 
 /* Post cards */
 .posts-grid {
