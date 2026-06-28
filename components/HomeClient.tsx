@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Post, ViewMode, SortMode } from '@/lib/types';
+import type { Post, ViewMode, SortMode, PpRange } from '@/lib/types';
 import { SORT_OPTIONS } from '@/lib/types';
 import { buildCategorized, orderedCategories } from '@/lib/categorize';
+import { ppBounds } from '@/lib/derive';
 import { getFiltered } from '@/lib/filter';
 import { decodeState, encodeState, SCROLL_KEY, DEFAULT_PAGE_SIZE } from '@/lib/urlState';
 import TuneGrid from './TuneGrid';
@@ -15,6 +16,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   const router = useRouter();
   const { categorized, tagCategoryOf } = useMemo(() => buildCategorized(posts), [posts]);
   const cats = useMemo(() => orderedCategories(categorized), [categorized]);
+  const ppRangeBounds = useMemo(() => ppBounds(posts), [posts]);
 
   // Start from defaults so the server-prerendered HTML and the first client
   // render are identical (clean hydration + fast first paint of page 1). Any URL
@@ -22,6 +24,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
+  const [pp, setPp] = useState<PpRange | null>(null);
   const [sort, setSort] = useState<SortMode>('newest');
   const [page, setPage] = useState(1);
   const size = DEFAULT_PAGE_SIZE; // fixed page size (per-page selector removed)
@@ -37,6 +40,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     setSearchInput(s.search);
     setSearch(s.search);
     setActiveFilters(new Set(s.filters));
+    setPp(s.pp);
     setSort(s.sort);
     setPage(s.page);
     setView(s.view);
@@ -62,14 +66,14 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   // Reflect state into the URL (replace, no history spam) once the URL is read.
   useEffect(() => {
     if (!urlReady) return;
-    const qs = encodeState({ search, sort, filters: [...activeFilters], page, size, view });
+    const qs = encodeState({ search, sort, filters: [...activeFilters], pp, page, size, view });
     if (qs === window.location.search) return;
     router.replace(`/${qs}`, { scroll: false });
-  }, [urlReady, search, sort, activeFilters, page, size, view, router]);
+  }, [urlReady, search, sort, activeFilters, pp, page, size, view, router]);
 
   const filtered = useMemo(
-    () => getFiltered(posts, { search, sort, activeFilters }, tagCategoryOf),
-    [posts, search, sort, activeFilters, tagCategoryOf],
+    () => getFiltered(posts, { search, sort, activeFilters, pp }, tagCategoryOf),
+    [posts, search, sort, activeFilters, pp, tagCategoryOf],
   );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / size));
@@ -108,12 +112,14 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
 
   function clearAll() {
     setActiveFilters(new Set());
+    setPp(null);
     setSearchInput('');
     setSearch('');
     setPage(1);
   }
 
-  const hasActive = activeFilters.size > 0 || search.length > 0;
+  const activeCount = activeFilters.size + (pp ? 1 : 0);
+  const hasActive = activeFilters.size > 0 || pp !== null || search.length > 0;
 
   return (
     <div id="app" className="visible">
@@ -139,7 +145,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           <div className="controls-left">
             <button className="btn secondary more-filters-btn" onClick={() => setModalOpen(true)}>
               Filters
-              {activeFilters.size > 0 && <span className="badge">{activeFilters.size}</span>}
+              {activeCount > 0 && <span className="badge">{activeCount}</span>}
             </button>
             <label className="sort-select">
               <span className="sr-only">Sort</span>
@@ -199,8 +205,21 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         </div>
       </div>
 
-      {activeFilters.size > 0 && (
+      {(activeFilters.size > 0 || pp) && (
         <div className="active-filters">
+          {pp && (
+            <button
+              className="active-chip"
+              onClick={() => {
+                setPp(null);
+                setPage(1);
+              }}
+              aria-label={`Remove PP filter ${pp.min} to ${pp.max}`}
+            >
+              {pp.min}–{pp.max} PP
+              <span className="active-chip-x" aria-hidden="true">×</span>
+            </button>
+          )}
           {[...activeFilters].map((t) => (
             <button
               key={t}
@@ -231,9 +250,12 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         categorized={categorized}
         posts={posts}
         tagCategoryOf={tagCategoryOf}
+        ppBounds={ppRangeBounds}
         initial={activeFilters}
-        onApply={(f) => {
+        initialPp={pp}
+        onApply={(f, ppRange) => {
           setActiveFilters(f);
+          setPp(ppRange);
           setPage(1);
           setModalOpen(false);
         }}

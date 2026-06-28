@@ -30,8 +30,15 @@ export const SORT_OPTIONS: { value: SortMode; label: string }[] = [
 
 export type ViewMode = 'detailed' | 'compact';
 
+// Inclusive PP range. null/absent means "no PP filter".
+export interface PpRange {
+  min: number;
+  max: number;
+}
+
 export interface FilterState {
   search: string;
   sort: SortMode;
   activeFilters: Set<string>;
+  pp?: PpRange | null;
 }
