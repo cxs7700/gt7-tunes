@@ -305,7 +305,18 @@ body {
 .chip:disabled:hover { border-color: var(--border-soft); color: var(--text-dim); }
 
 /* PP range slider (dual-handle) */
-.pp-range { padding: 16px 6px 8px; }
+.pp-range {
+  padding: 16px 6px 8px;
+  max-height: 2000px;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.2s ease;
+}
+.filter-group.collapsed .pp-range {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .pp-range-values {
   display: flex;
   justify-content: space-between;
