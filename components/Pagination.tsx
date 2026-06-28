@@ -4,10 +4,10 @@ interface Props {
   page: number;
   size: number;
   total: number;
-  onPage: (page: number) => void;
+  onStep: (delta: number) => void;
 }
 
-export default function Pagination({ page, size, total, onPage }: Props) {
+export default function Pagination({ page, size, total, onStep }: Props) {
   const totalPages = Math.max(1, Math.ceil(total / size));
   const current = Math.min(page, totalPages);
   const start = total === 0 ? 0 : (current - 1) * size + 1;
@@ -22,7 +22,7 @@ export default function Pagination({ page, size, total, onPage }: Props) {
       <div className="page-nav">
         <button
           className="btn secondary"
-          onClick={() => onPage(current - 1)}
+          onClick={() => onStep(-1)}
           disabled={current <= 1}
         >
           ← Prev
@@ -32,7 +32,7 @@ export default function Pagination({ page, size, total, onPage }: Props) {
         </span>
         <button
           className="btn secondary"
-          onClick={() => onPage(current + 1)}
+          onClick={() => onStep(1)}
           disabled={current >= totalPages}
         >
           Next →
