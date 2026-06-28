@@ -14,7 +14,7 @@ export default function BackButton() {
         else router.push('/');
       }}
     >
-      ← Back to tunes
+      ← Back
     </button>
   );
 }
