@@ -659,11 +659,24 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   bottom: 0;
   z-index: 140;
   margin-top: 18px;
+  border-top: 1px solid var(--border-soft);
+  padding-bottom: env(safe-area-inset-bottom); /* clear iOS home indicator */
+  isolation: isolate; /* keep ::before frosting behind the controls */
+}
+/* Frost the bar via a pseudo-element layer, NOT the footer itself. A sticky
+   element that owns a backdrop-filter becomes a composited layer whose raster
+   is cached on mobile: when only the inner "Page x" text / button disabled
+   state changes, the layer isn't repainted until a scroll/touch invalidates it
+   (the value looked "stuck" until you scrolled or focused a card). Isolating
+   the filter to ::before lets the controls repaint on every state change. */
+.list-footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: rgba(15, 16, 32, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid var(--border-soft);
-  padding-bottom: env(safe-area-inset-bottom); /* clear iOS home indicator */
 }
 .list-footer .pagination { padding: 10px 0; margin: 0; }
 @media (max-width: 600px) {
