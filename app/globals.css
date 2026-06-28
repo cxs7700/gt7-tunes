@@ -565,8 +565,22 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 .modal-footer-count { color: var(--text-dim); font-size: 0.85rem; }
 .modal-footer-actions { display: flex; gap: 10px; }
 @media (max-width: 600px) {
-  .modal-backdrop { padding: 0; }
-  .modal { max-width: 100%; max-height: 100vh; height: 100vh; border-radius: 0; border: none; }
+  .modal-backdrop {
+    /* dvh tracks the visible viewport (excludes browser toolbars); safe-area
+       insets keep the modal clear of the notch/status bar and home indicator. */
+    height: 100dvh;
+    bottom: auto;
+    align-items: stretch;
+    padding: calc(env(safe-area-inset-top) + 10px) 0 calc(env(safe-area-inset-bottom) + 10px);
+  }
+  .modal {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    border-radius: 0;
+    border: none;
+  }
 }
 
 /* ---- Pagination ---- */
