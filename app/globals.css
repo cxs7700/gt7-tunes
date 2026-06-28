@@ -37,19 +37,6 @@ body {
 }
 ::selection { background: var(--accent); color: #fff; }
 
-/* Fixed background image behind a semi-transparent black overlay (set via the
-   inline backgroundImage in layout so it's base-path aware). Falls back to the
-   solid --bg if public/background.jpg is absent. */
-.app-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-color: var(--bg);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 /* App header */
 .app-header {
   position: sticky;
