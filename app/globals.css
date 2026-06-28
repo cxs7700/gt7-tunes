@@ -116,7 +116,7 @@ body {
 #drop-zone .btn { padding: 12px 32px; font-size: 1em; }
 
 /* Main app */
-#app { display: none; max-width: var(--maxw); margin: 0 auto; padding: 14px 20px 56px; }
+#app { display: none; max-width: var(--maxw); margin: 0 auto; padding: 14px 20px 0; }
 #app.visible { display: block; }
 
 /* Toolbar */
@@ -373,7 +373,7 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   .app-header-inner { padding: 8px 14px; }
   .brand-name { font-size: 1rem; }
   .app-header .stats { font-size: 0.78rem; }
-  #app { padding: 10px 14px 48px; }
+  #app { padding: 10px 14px 0; }
   .toolbar { gap: 8px; padding: 10px 0; }
   .search-wrap { flex: 1 1 100%; }
   .controls { flex: 1 1 100%; justify-content: space-between; }
