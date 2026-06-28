@@ -19,6 +19,13 @@ test('search narrows the result set', async ({ page }) => {
   await expect(page.locator('.post-card').first()).toBeVisible();
 });
 
+test('search tolerates a typo (fuzzy match) and ranks the car first', async ({ page }) => {
+  await page.goto(HOME);
+  await page.fill('#search', 'porshe'); // missing the "c"
+  await expect(page.locator('.post-card').first()).toBeVisible();
+  await expect(page.locator('.post-card').first().locator('.post-title')).toContainText(/porsche/i);
+});
+
 test('sort PP high→low orders cards by PP descending', async ({ page }) => {
   await page.goto(HOME);
   await page.selectOption('.sort-select select', 'pp-desc');
