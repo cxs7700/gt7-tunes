@@ -125,6 +125,20 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           />
         </div>
         <div className="controls">
+          <div className="controls-left">
+            <button className="btn secondary more-filters-btn" onClick={() => setModalOpen(true)}>
+              Filters
+              {activeFilters.size > 0 && <span className="badge">{activeFilters.size}</span>}
+            </button>
+            {hasActive && (
+              <button className="btn secondary" onClick={clearAll}>
+                Clear
+              </button>
+            )}
+            <span className="stats">
+              {filtered.length} of {posts.length} tunes
+            </span>
+          </div>
           <div className="view-toggle" role="group" aria-label="View">
             <button
               className={'view-btn' + (view === 'detailed' ? ' active' : '')}
@@ -157,19 +171,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
               </svg>
             </button>
           </div>
-          <button className="btn secondary more-filters-btn" onClick={() => setModalOpen(true)}>
-            Filters
-            {activeFilters.size > 0 && <span className="badge">{activeFilters.size}</span>}
-          </button>
-          {hasActive && (
-            <button className="btn secondary" onClick={clearAll}>
-              Clear
-            </button>
-          )}
         </div>
-        <span className="stats">
-          {filtered.length} of {posts.length} tunes
-        </span>
       </div>
 
       {activeFilters.size > 0 && (
