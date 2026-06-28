@@ -80,8 +80,10 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     [filtered, current, size],
   );
 
-  function goToPage(p: number) {
-    setPage(p);
+  // Step relative to the latest pending page so rapid taps compose instead of
+  // collapsing on a stale value (each click re-reads the freshest page).
+  function stepPage(delta: number) {
+    setPage((p) => Math.min(Math.max(1, p + delta), totalPages));
     window.scrollTo({ top: 0 });
   }
 
@@ -196,7 +198,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
 
       {filtered.length > 0 && (
         <div className="list-footer">
-          <Pagination page={current} size={size} total={filtered.length} onPage={goToPage} />
+          <Pagination page={current} size={size} total={filtered.length} onStep={stepPage} />
         </div>
       )}
 
