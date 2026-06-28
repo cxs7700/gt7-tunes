@@ -22,6 +22,21 @@ test('home loads all tunes with no page errors', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test('PWA manifest and icons are wired up', async ({ page, request }) => {
+  await page.goto(HOME);
+  const manifestHref = await page.getAttribute('link[rel="manifest"]', 'href');
+  expect(manifestHref).toContain('/gt7-tunes/manifest.webmanifest');
+  const res = await request.get(manifestHref!);
+  expect(res.ok()).toBeTruthy();
+  const m = await res.json();
+  expect(m.name).toBe('GT7 Tunes');
+  expect(m.start_url).toContain('/gt7-tunes/');
+  expect(m.icons.length).toBeGreaterThanOrEqual(3);
+  expect(await page.getAttribute('link[rel="apple-touch-icon"]', 'href')).toContain(
+    '/gt7-tunes/apple-touch-icon.png',
+  );
+});
+
 test('search narrows the result set', async ({ page }) => {
   await page.goto(HOME);
   await page.fill('#search', 'porsche');
@@ -120,7 +135,12 @@ test('detail page shows a Similar tunes rail that navigates', async ({ page }) =
   await expect(rail.first()).toBeVisible();
   const before = new URL(page.url()).pathname;
   await rail.first().click();
-  await expect(page).toHaveURL(/\/tune\/\d+\//);
+  // Wait until we land on a *different* tune (the generic /tune/<id>/ regex
+  // would otherwise match the page we started on).
+  await page.waitForFunction(
+    (b) => location.pathname !== b && /\/tune\/\d+\//.test(location.pathname),
+    before,
+  );
   expect(new URL(page.url()).pathname).not.toBe(before);
 });
 
