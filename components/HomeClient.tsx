@@ -229,6 +229,8 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         open={modalOpen}
         cats={cats}
         categorized={categorized}
+        posts={posts}
+        tagCategoryOf={tagCategoryOf}
         initial={activeFilters}
         onApply={(f) => {
           setActiveFilters(f);

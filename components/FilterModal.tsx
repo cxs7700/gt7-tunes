@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import type { Categorized } from '@/lib/types';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { Categorized, Post } from '@/lib/types';
+import { facetCounts } from '@/lib/facets';
 
 interface Props {
   open: boolean;
   cats: string[];
   categorized: Categorized;
+  posts: Post[];
+  tagCategoryOf: Record<string, string>;
   initial: Set<string>;
   onApply: (filters: Set<string>) => void;
   onClose: () => void;
@@ -14,10 +17,25 @@ interface Props {
 
 // Modal of all filter categories. Selections are STAGED locally and only take
 // effect when "Apply Filters" is pressed; Close/Esc/backdrop discard them.
-export default function FilterModal({ open, cats, categorized, initial, onApply, onClose }: Props) {
+export default function FilterModal({
+  open,
+  cats,
+  categorized,
+  posts,
+  tagCategoryOf,
+  initial,
+  onApply,
+  onClose,
+}: Props) {
   const [staged, setStaged] = useState<Set<string>>(() => new Set(initial));
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const ref = useRef<HTMLDivElement>(null);
+
+  // Contextual per-chip counts given the OTHER categories' staged selections.
+  const facets = useMemo(
+    () => facetCounts(posts, staged, tagCategoryOf),
+    [posts, staged, tagCategoryOf],
+  );
 
   // Keep the modal mounted briefly while it animates out.
   const [visible, setVisible] = useState(open);
@@ -134,16 +152,24 @@ export default function FilterModal({ open, cats, categorized, initial, onApply,
                 </div>
                 <div className="filter-chips-wrap">
                   <div className="filter-chips">
-                  {categorized[cat].map(({ tag, count }) => (
-                    <button
-                      key={tag}
-                      className={'chip' + (staged.has(tag) ? ' active' : '')}
-                      onClick={() => toggleChip(tag)}
-                    >
-                      {tag}
-                      <span className="chip-count">{count}</span>
-                    </button>
-                  ))}
+                  {categorized[cat].map(({ tag }) => {
+                    const on = staged.has(tag);
+                    const fc = facets.get(tag) ?? 0;
+                    // Zero-result chips are disabled, unless already selected
+                    // (so a selection can always be undone).
+                    const disabled = fc === 0 && !on;
+                    return (
+                      <button
+                        key={tag}
+                        className={'chip' + (on ? ' active' : '') + (disabled ? ' disabled' : '')}
+                        onClick={() => toggleChip(tag)}
+                        disabled={disabled}
+                      >
+                        {tag}
+                        <span className="chip-count">{fc}</span>
+                      </button>
+                    );
+                  })}
                   </div>
                 </div>
               </div>
