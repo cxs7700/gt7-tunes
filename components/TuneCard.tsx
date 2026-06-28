@@ -7,8 +7,8 @@ import { saveListScroll } from '@/lib/urlState';
 import Highlight from './Highlight';
 
 // A card whose whole surface navigates to the tune's detail page (stretched-link
-// pattern, so no nested <a>). Detailed view also shows body preview, tags, photo
-// count, and an "Open on Patreon" button (which sits above the overlay link).
+// pattern, so no nested <a>). Detailed view also shows body preview and tags;
+// the photo count and "Open on Patreon" button live on the detail page only.
 // Compact view shows only image + title + date.
 export default function TuneCard({
   post,
@@ -57,22 +57,6 @@ export default function TuneCard({
               ))}
             </div>
           )}
-
-          <div className="card-footer">
-            {post.imageUrls.length > 0 && (
-              <span className="card-imgcount">
-                {post.imageUrls.length} photo{post.imageUrls.length > 1 ? 's' : ''}
-              </span>
-            )}
-            <a
-              className="btn secondary patreon-btn"
-              href={post.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open on Patreon ↗
-            </a>
-          </div>
         </>
       )}
     </article>
