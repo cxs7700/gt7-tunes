@@ -672,3 +672,42 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   .list-footer .page-nav .btn { flex: 1 1 0; min-height: 46px; font-size: 0.95rem; }
   .list-footer .page-indicator { flex: 0 0 auto; }
 }
+
+/* ---- Lightbox image position dots ---- */
+.lightbox-dots {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(env(safe-area-inset-bottom) + 16px);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: var(--pill);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  max-width: 90vw;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.lb-dot {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.lb-dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  transition: background 0.15s, transform 0.15s;
+}
+.lb-dot:hover::before { background: rgba(255, 255, 255, 0.75); }
+.lb-dot.active::before { background: #fff; transform: scale(1.35); }
