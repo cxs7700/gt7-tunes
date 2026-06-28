@@ -63,6 +63,13 @@ Rating, Setup, Other** — with **OR within a category, AND across categories**,
 combined with full-text search. Categorization (incl. an explicit GT7 `MAKES`
 allow-list) lives in `lib/categorize.ts`; the data file is never modified.
 
+## Logo
+
+The header shows `public/logo.svg` if present, otherwise it falls back to the
+"GT7 Tunes" wordmark. To use a custom logo, drop an SVG (or update `BrandLogo` to
+point at a PNG) at `public/logo.svg`. Make sure you have the rights to any logo
+you add — game/brand logos are trademarked.
+
 ## Updating tunes
 
 Edit `data/posts.json` (array of `{ id, title, date, body, url, tags,
