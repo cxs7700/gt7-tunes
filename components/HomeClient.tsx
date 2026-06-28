@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Post, SortMode, ViewMode } from '@/lib/types';
+import type { Post, ViewMode } from '@/lib/types';
 import { buildCategorized, orderedCategories } from '@/lib/categorize';
 import { getFiltered } from '@/lib/filter';
 import { decodeState, encodeState, SCROLL_KEY, DEFAULT_PAGE_SIZE } from '@/lib/urlState';
@@ -20,10 +20,9 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   // state (e.g. returning from a tune) is applied immediately after mount.
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
-  const [sort, setSort] = useState<SortMode>('newest');
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(DEFAULT_PAGE_SIZE);
+  const size = DEFAULT_PAGE_SIZE; // fixed page size (per-page selector removed)
   const [view, setView] = useState<ViewMode>('detailed');
   const [modalOpen, setModalOpen] = useState(false);
   const [urlReady, setUrlReady] = useState(false);
@@ -35,9 +34,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     const s = decodeState(window.location.search);
     setSearchInput(s.search);
     setSearch(s.search);
-    setSort(s.sort);
     setActiveFilters(new Set(s.filters));
-    setSize(s.size);
     setPage(s.page);
     setView(s.view);
     setUrlReady(true);
@@ -62,14 +59,14 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   // Reflect state into the URL (replace, no history spam) once the URL is read.
   useEffect(() => {
     if (!urlReady) return;
-    const qs = encodeState({ search, sort, filters: [...activeFilters], page, size, view });
+    const qs = encodeState({ search, sort: 'newest', filters: [...activeFilters], page, size, view });
     if (qs === window.location.search) return;
     router.replace(`/${qs}`, { scroll: false });
-  }, [urlReady, search, sort, activeFilters, page, size, view, router]);
+  }, [urlReady, search, activeFilters, page, size, view, router]);
 
   const filtered = useMemo(
-    () => getFiltered(posts, { search, sort, activeFilters }, tagCategoryOf),
-    [posts, search, sort, activeFilters, tagCategoryOf],
+    () => getFiltered(posts, { search, sort: 'newest', activeFilters }, tagCategoryOf),
+    [posts, search, activeFilters, tagCategoryOf],
   );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / size));
@@ -86,10 +83,6 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   function goToPage(p: number) {
     setPage(p);
     window.scrollTo({ top: 0 });
-  }
-  function changeSize(n: number) {
-    setSize(n);
-    setPage(1);
   }
 
   function toggleFilter(tag: string) {
@@ -132,35 +125,36 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           />
         </div>
         <div className="controls">
-          <div className="sort-control">
-            <label htmlFor="sort-select">Sort</label>
-            <select
-              id="sort-select"
-              value={sort}
-              onChange={(e) => {
-                setSort(e.target.value as SortMode);
-                setPage(1);
-              }}
-            >
-              <option value="newest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-              <option value="title">Title A-Z</option>
-            </select>
-          </div>
           <div className="view-toggle" role="group" aria-label="View">
             <button
               className={'view-btn' + (view === 'detailed' ? ' active' : '')}
               aria-pressed={view === 'detailed'}
+              aria-label="Detailed view"
+              title="Detailed view"
               onClick={() => setView('detailed')}
             >
-              Detailed
+              <svg className="view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="9" y1="6" x2="20" y2="6" />
+                <line x1="9" y1="12" x2="20" y2="12" />
+                <line x1="9" y1="18" x2="20" y2="18" />
+                <line x1="4" y1="6" x2="4.01" y2="6" />
+                <line x1="4" y1="12" x2="4.01" y2="12" />
+                <line x1="4" y1="18" x2="4.01" y2="18" />
+              </svg>
             </button>
             <button
               className={'view-btn' + (view === 'compact' ? ' active' : '')}
               aria-pressed={view === 'compact'}
+              aria-label="Compact view"
+              title="Compact view"
               onClick={() => setView('compact')}
             >
-              Compact
+              <svg className="view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                <rect x="14" y="14" width="7" height="7" rx="1.5" />
+              </svg>
             </button>
           </div>
           <button className="btn secondary more-filters-btn" onClick={() => setModalOpen(true)}>
@@ -195,13 +189,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
       )}
 
       {filtered.length > 0 && (
-        <Pagination
-          page={current}
-          size={size}
-          total={filtered.length}
-          onPage={goToPage}
-          onSize={changeSize}
-        />
+        <Pagination page={current} size={size} total={filtered.length} onPage={goToPage} />
       )}
       </div>
 
