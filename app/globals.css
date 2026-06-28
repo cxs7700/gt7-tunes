@@ -538,6 +538,52 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   /* anchor with no text; covers the card to make the whole surface clickable */
 }
 .post-card:focus-within { border-color: var(--accent); }
+
+/* Favorite (save) star — sits above the overlay link so it stays clickable. */
+.fav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-dim);
+}
+.fav-icon {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  transition: fill 0.12s, stroke 0.12s, transform 0.08s;
+}
+.fav-btn:active .fav-icon { transform: scale(0.88); }
+.fav-btn.on { color: #ffd45e; }
+.fav-btn.on .fav-icon { fill: #ffd45e; stroke: #ffd45e; }
+.card-fav {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--pill);
+  background: rgba(10, 11, 26, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #fff;
+}
+.card-fav.on { color: #ffd45e; }
+
+/* "Saved" view toggle in the controls. */
+.saved-toggle { display: inline-flex; align-items: center; gap: 7px; }
+.saved-toggle .fav-icon { width: 16px; height: 16px; }
+.saved-toggle.active { border-color: #ffd45e; color: #ffd45e; }
+.saved-toggle.active .fav-icon { fill: #ffd45e; stroke: #ffd45e; }
+
+.empty-state { color: var(--text-dim); text-align: center; padding: 48px 16px; font-size: 1rem; }
 .card-cover {
   width: 100%;
   aspect-ratio: 16 / 9;

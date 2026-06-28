@@ -22,6 +22,7 @@ export interface ListState {
   sort: SortMode;
   filters: string[];
   pp: PpRange | null;
+  saved: boolean;
   page: number;
   size: number;
   view: ViewMode;
@@ -50,6 +51,7 @@ export function decodeState(search: string): ListState {
     sort: SORTS.includes(sort as SortMode) ? (sort as SortMode) : 'newest',
     filters: f ? f.split(',').map(decodeURIComponent).filter(Boolean) : [],
     pp: parsePp(p.get('pp')),
+    saved: p.get('saved') === '1',
     page: Number.isFinite(page) && page > 0 ? page : 1,
     size: (PAGE_SIZES as readonly number[]).includes(size) ? size : DEFAULT_PAGE_SIZE,
     view: p.get('view') === 'compact' ? 'compact' : 'detailed',
@@ -63,6 +65,7 @@ export function encodeState(s: ListState): string {
   if (s.sort !== 'newest') p.set('sort', s.sort);
   if (s.filters.length) p.set('f', s.filters.map(encodeURIComponent).join(','));
   if (s.pp) p.set('pp', `${s.pp.min}-${s.pp.max}`);
+  if (s.saved) p.set('saved', '1');
   if (s.size !== DEFAULT_PAGE_SIZE) p.set('size', String(s.size));
   if (s.view !== 'detailed') p.set('view', s.view);
   if (s.page > 1) p.set('page', String(s.page));
