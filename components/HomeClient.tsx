@@ -188,12 +188,15 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         </div>
       )}
 
-      {filtered.length > 0 && (
-        <Pagination page={current} size={size} total={filtered.length} onPage={goToPage} />
-      )}
       </div>
 
       <TuneGrid posts={paged} query={search} view={view} />
+
+      {filtered.length > 0 && (
+        <div className="list-footer">
+          <Pagination page={current} size={size} total={filtered.length} onPage={goToPage} />
+        </div>
+      )}
 
       <FilterModal
         open={modalOpen}
