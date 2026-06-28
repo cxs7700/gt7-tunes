@@ -266,10 +266,9 @@ body {
 .posts-grid {
   display: grid;
   gap: 18px;
-  /* min(340px, 100%) so a column never exceeds a narrow viewport */
-  /* 1 col on phones, 2 on tablet (~768px), up to 4 on desktop (capped by the
-     1240px #app width). */
-  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  /* Detailed: 1 col on phones, 2 on tablet (~768px), max 3 on desktop
+     (320px track capped by the 1240px #app width). */
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
 }
 .post-card {
   background: var(--bg-card);
@@ -630,7 +629,8 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 
 /* ---- Compact view: denser grid, image + title + date only ---- */
 .posts-grid.compact {
-  grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+  /* max 4 on desktop (260px track capped by the 1240px #app width). */
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: 14px;
 }
 .post-card.compact { padding: 12px; }
