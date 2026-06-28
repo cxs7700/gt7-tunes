@@ -100,6 +100,19 @@ export default function DetailGallery({ images }: { images: string[] }) {
           )}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={images[idx]} alt="" onClick={(e) => e.stopPropagation()} />
+          {n > 1 && (
+            <div className="lightbox-dots" onClick={(e) => e.stopPropagation()}>
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  className={'lb-dot' + (i === idx ? ' active' : '')}
+                  aria-label={`Go to image ${i + 1} of ${n}`}
+                  aria-current={i === idx}
+                  onClick={() => setIdx(i)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </>
