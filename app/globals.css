@@ -618,3 +618,23 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 .post-card.compact .card-cover { margin-bottom: 10px; }
 .post-card.compact .post-header { margin-bottom: 0; }
 .post-card.compact .post-title { font-size: 1rem; }
+
+/* ---- Sticky bottom pagination bar (app-style bottom nav) ---- */
+.list-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 140;
+  margin-top: 18px;
+  background: rgba(15, 16, 32, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border-soft);
+  padding-bottom: env(safe-area-inset-bottom); /* clear iOS home indicator */
+}
+.list-footer .pagination { padding: 10px 0; margin: 0; }
+@media (max-width: 600px) {
+  .list-footer .page-range { display: none; }       /* keep the bottom bar compact */
+  .list-footer .page-nav { flex: 1 1 100%; justify-content: space-between; gap: 12px; }
+  .list-footer .page-nav .btn { flex: 1 1 0; min-height: 46px; font-size: 0.95rem; }
+  .list-footer .page-indicator { flex: 0 0 auto; }
+}
