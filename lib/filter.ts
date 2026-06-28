@@ -2,6 +2,7 @@ import type { Post, FilterState } from './types';
 import { categorize } from './categorize';
 import { canonicalOf } from './tagMerge';
 import { derivePp, deriveStars } from './derive';
+import { scorePost, queryTerms } from './search';
 
 // Pure filter+sort, ported from the original app:
 //   - within a category: OR (match any selected tag)
@@ -37,11 +38,17 @@ export function getFiltered(
     });
   }
 
-  const q = state.search.trim().toLowerCase();
-  if (q) {
+  // Typo-tolerant, weighted search. Keep scores to order by relevance when no
+  // explicit sort is chosen.
+  const terms = queryTerms(state.search);
+  let scores: Map<string, number> | null = null;
+  if (terms.length) {
+    scores = new Map();
     filtered = filtered.filter((p) => {
-      const text = `${p.title} ${p.body} ${p.tags.join(' ')}`.toLowerCase();
-      return text.includes(q);
+      const s = scorePost(p, terms);
+      if (s == null) return false;
+      scores!.set(p.id, s);
+      return true;
     });
   }
 
@@ -54,6 +61,9 @@ export function getFiltered(
     filtered.sort((a, b) => (derivePp(a) ?? Infinity) - (derivePp(b) ?? Infinity));
   } else if (state.sort === 'rating') {
     filtered.sort((a, b) => (deriveStars(b) ?? -1) - (deriveStars(a) ?? -1));
-  } // 'newest' keeps source order (data is newest-first)
+  } else if (scores) {
+    // Default sort ('newest') with a query → order by relevance.
+    filtered.sort((a, b) => (scores!.get(b.id) ?? 0) - (scores!.get(a.id) ?? 0));
+  } // plain 'newest' keeps source order (data is newest-first)
   return filtered;
 }
