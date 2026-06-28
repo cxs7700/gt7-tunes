@@ -144,6 +144,20 @@ test('detail page shows a Similar tunes rail that navigates', async ({ page }) =
   expect(new URL(page.url()).pathname).not.toBe(before);
 });
 
+test('compare: pin two tunes and open the side-by-side modal', async ({ page }) => {
+  await page.goto(HOME);
+  const cards = page.locator('.post-card');
+  await cards.nth(0).locator('.cmp-btn').click();
+  await cards.nth(1).locator('.cmp-btn').click();
+  await expect(page.locator('.compare-bar-label')).toContainText('2/3');
+  await page.locator('.compare-bar .btn:not(.secondary)').click();
+  await expect(page.locator('.compare-modal')).toBeVisible();
+  await expect(page.locator('.compare-head')).toHaveCount(2);
+  await expect(page.locator('.compare-label', { hasText: 'PP' })).toBeVisible();
+  await page.locator('.compare-remove').first().click();
+  await expect(page.locator('.compare-head')).toHaveCount(1);
+});
+
 test('favorites persist and the Saved view filters to them', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.post-card .card-fav').first().click();

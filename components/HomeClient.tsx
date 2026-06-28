@@ -12,6 +12,8 @@ import { decodeState, encodeState, SCROLL_KEY, DEFAULT_PAGE_SIZE } from '@/lib/u
 import TuneGrid from './TuneGrid';
 import FilterModal from './FilterModal';
 import Pagination from './Pagination';
+import CompareModal from './CompareModal';
+import { useCompare } from '@/lib/useCompare';
 
 export default function HomeClient({ posts }: { posts: Post[] }) {
   const router = useRouter();
@@ -34,6 +36,8 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   const [view, setView] = useState<ViewMode>('detailed');
   const [modalOpen, setModalOpen] = useState(false);
   const [controlsOpen, setControlsOpen] = useState(false);
+  const [compareOpen, setCompareOpen] = useState(false);
+  const { ids: compareIds, count: compareCount, remove: removeCompare, clear: clearCompare, max: compareMax } = useCompare();
   const [urlReady, setUrlReady] = useState(false);
 
   // After mount, apply any URL state, then restore the saved scroll position
@@ -89,6 +93,11 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     const base = getFiltered(posts, { search, sort, activeFilters, pp }, tagCategoryOf);
     return savedOnly ? base.filter((p) => favs.has(p.id)) : base;
   }, [posts, search, sort, activeFilters, pp, savedOnly, favs, tagCategoryOf]);
+
+  const comparePosts = useMemo(
+    () => posts.filter((p) => compareIds.has(p.id)),
+    [posts, compareIds],
+  );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / size));
   // Keep page within range if the result set shrinks.
@@ -285,6 +294,27 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         </div>
       )}
 
+      {compareCount > 0 && (
+        <div className="compare-bar">
+          <span className="compare-bar-label">
+            Comparing {compareCount}/{compareMax}
+          </span>
+          <div className="compare-bar-actions">
+            <button
+              className="btn"
+              onClick={() => setCompareOpen(true)}
+              disabled={compareCount < 2}
+              title={compareCount < 2 ? 'Add at least 2 tunes' : 'Compare selected tunes'}
+            >
+              Compare
+            </button>
+            <button className="btn secondary" onClick={clearCompare}>
+              Clear
+            </button>
+          </div>
+        </div>
+      )}
+
       </div>
 
       {filtered.length === 0 ? (
@@ -320,6 +350,14 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         }}
         onClose={() => setModalOpen(false)}
       />
+
+      {compareOpen && comparePosts.length >= 1 && (
+        <CompareModal
+          posts={comparePosts}
+          onRemove={removeCompare}
+          onClose={() => setCompareOpen(false)}
+        />
+      )}
     </div>
   );
 }

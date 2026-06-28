@@ -7,6 +7,7 @@ import { saveListScroll } from '@/lib/urlState';
 import Highlight from './Highlight';
 import SpecChips from './SpecChips';
 import FavoriteButton from './FavoriteButton';
+import CompareButton from './CompareButton';
 
 // A card whose whole surface navigates to the tune's detail page (stretched-link
 // pattern, so no nested <a>). Detailed view also shows headline spec chips, body
@@ -33,7 +34,10 @@ export default function TuneCard({
         onClick={saveListScroll}
       />
 
-      <FavoriteButton id={post.id} className="card-fav" />
+      <div className="card-actions">
+        <CompareButton id={post.id} className="card-action-btn" />
+        <FavoriteButton id={post.id} className="card-action-btn card-fav" />
+      </div>
 
       {cover && (
         <img className="card-cover" src={withBasePath(cover)} loading="lazy" decoding="async" alt="" />
