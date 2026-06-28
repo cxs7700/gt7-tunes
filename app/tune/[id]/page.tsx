@@ -5,6 +5,7 @@ import { withBasePath } from '@/lib/basePath';
 import BackButton from '@/components/BackButton';
 import DetailGallery from '@/components/DetailGallery';
 import SpecChips from '@/components/SpecChips';
+import FavoriteButton from '@/components/FavoriteButton';
 
 export function generateStaticParams() {
   return readPosts().map((p) => ({ id: p.id }));
@@ -27,6 +28,7 @@ export default function TunePage({ params }: { params: { id: string } }) {
 
       <div className="detail-meta">
         <span className="post-date">{post.date}</span>
+        <FavoriteButton id={post.id} className="detail-fav" />
         <a className="btn secondary" href={post.url} target="_blank" rel="noopener noreferrer">
           Open on Patreon ↗
         </a>
