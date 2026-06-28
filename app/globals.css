@@ -439,17 +439,6 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.card-footer {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-.card-imgcount { color: var(--text-dim); font-size: 0.78rem; }
-/* Interactive elements must sit above the overlay link. */
-.patreon-btn { position: relative; z-index: 2; text-decoration: none; }
-
 /* ---- Detail page ---- */
 .detail { max-width: 920px; margin: 0 auto; padding: 20px; }
 .back-btn { margin-bottom: 18px; text-decoration: none; }
