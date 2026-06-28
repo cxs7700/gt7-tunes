@@ -4,6 +4,16 @@ import { test, expect } from '@playwright/test';
 // previously hand-run with Playwright on every PR; now they gate CI.
 const HOME = '/gt7-tunes/';
 
+// Filters / Sort / view / Saved live behind the "Options" toggle (collapsed by
+// default). Open it before interacting with those controls.
+async function openControls(page: import('@playwright/test').Page) {
+  const toggle = page.locator('.controls-toggle');
+  if ((await toggle.getAttribute('aria-expanded')) !== 'true') {
+    await toggle.click();
+    await expect(page.locator('.controls-panel')).toHaveClass(/open/);
+  }
+}
+
 test('home loads all tunes with no page errors', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
@@ -28,6 +38,7 @@ test('search tolerates a typo (fuzzy match) and ranks the car first', async ({ p
 
 test('sort PP high→low orders cards by PP descending', async ({ page }) => {
   await page.goto(HOME);
+  await openControls(page);
   await page.selectOption('.sort-select select', 'pp-desc');
   await expect(page).toHaveURL(/sort=pp-desc/);
   const pps = await page.$$eval('.post-card .spec-chip.spec-pp', (els) =>
@@ -39,6 +50,7 @@ test('sort PP high→low orders cards by PP descending', async ({ page }) => {
 
 test('filter modal shows faceted counts and applies', async ({ page }) => {
   await page.goto(HOME);
+  await openControls(page);
   await page.click('.more-filters-btn');
   await expect(page.locator('.modal')).toBeVisible();
   // Nissan's count is read from the (collapsed) Make/Brand group; staging a
@@ -55,6 +67,7 @@ test('filter modal shows faceted counts and applies', async ({ page }) => {
 
 test('PP range slider filters to the chosen range', async ({ page }) => {
   await page.goto(HOME);
+  await openControls(page);
   await page.click('.more-filters-btn');
   await page.locator('.range-slider input[type=range]').first().fill('700');
   await page.click('.modal-footer .btn:not(.secondary)');
@@ -67,10 +80,13 @@ test('PP range slider filters to the chosen range', async ({ page }) => {
 
 test('list state is restored after visiting a tune and going back', async ({ page }) => {
   await page.goto(HOME);
+  await openControls(page);
   await page.selectOption('.sort-select select', 'pp-desc');
   await page.locator('.card-overlay-link').first().click();
   await expect(page).toHaveURL(/\/tune\/\d+\//);
   await page.goBack();
+  await expect(page).toHaveURL(/sort=pp-desc/);
+  await openControls(page);
   await expect(page.locator('.sort-select select')).toHaveValue('pp-desc');
 });
 
@@ -111,6 +127,7 @@ test('detail page shows a Similar tunes rail that navigates', async ({ page }) =
 test('favorites persist and the Saved view filters to them', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.post-card .card-fav').first().click();
+  await openControls(page);
   await expect(page.locator('.saved-toggle')).toContainText('Saved (1)');
   await page.click('.saved-toggle');
   await expect(page).toHaveURL(/saved=1/);

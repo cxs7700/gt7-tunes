@@ -171,6 +171,30 @@ body {
 }
 .controls-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
+/* Collapsible controls: the "Options" toggle reveals Filters / Sort / view /
+   Saved so they don't take up space (or wrap) by default. */
+.controls-toggle { display: inline-flex; align-items: center; gap: 8px; }
+.controls-toggle-icon { width: 18px; height: 18px; flex: 0 0 auto; }
+.controls-toggle .chevron {
+  width: 15px;
+  height: 15px;
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+.controls-toggle[aria-expanded='true'] .chevron { transform: rotate(180deg); }
+.controls-panel {
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.2s ease;
+}
+.controls-panel.open { max-height: 400px; opacity: 1; margin-top: 4px; }
+
 /* Sort dropdown — native <select> styled like a secondary button (compact and
    mobile-friendly). */
 .sort-select { display: inline-flex; }
@@ -634,7 +658,11 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 .detail-images img { cursor: zoom-in; }
 
 /* ---- Similar tunes rail ---- */
-.related { margin-top: 32px; }
+.related {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-soft);
+}
 .related-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; }
 .related-rail {
   display: grid;

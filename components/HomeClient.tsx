@@ -33,6 +33,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   const size = DEFAULT_PAGE_SIZE; // fixed page size (per-page selector removed)
   const [view, setView] = useState<ViewMode>('detailed');
   const [modalOpen, setModalOpen] = useState(false);
+  const [controlsOpen, setControlsOpen] = useState(false);
   const [urlReady, setUrlReady] = useState(false);
 
   // After mount, apply any URL state, then restore the saved scroll position
@@ -161,45 +162,49 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           />
         </div>
         <div className="controls">
-          <div className="controls-left">
-            <button className="btn secondary more-filters-btn" onClick={() => setModalOpen(true)}>
-              Filters
-              {activeCount > 0 && <span className="badge">{activeCount}</span>}
-            </button>
-            <label className="sort-select">
-              <span className="sr-only">Sort</span>
-              <select
-                value={sort}
-                onChange={(e) => changeSort(e.target.value as SortMode)}
-                aria-label="Sort tunes"
-              >
-                {SORT_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button
-              className={'btn secondary saved-toggle' + (savedOnly ? ' active' : '')}
-              onClick={toggleSavedOnly}
-              aria-pressed={savedOnly}
-              title="Show saved tunes"
+          <button
+            className="btn secondary controls-toggle"
+            onClick={() => setControlsOpen((o) => !o)}
+            aria-expanded={controlsOpen}
+            aria-controls="controls-panel"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="controls-toggle-icon">
+              <line x1="4" y1="6" x2="20" y2="6" />
+              <circle cx="9" cy="6" r="2" fill="var(--bg-input)" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+              <circle cx="15" cy="12" r="2" fill="var(--bg-input)" />
+              <line x1="4" y1="18" x2="20" y2="18" />
+              <circle cx="9" cy="18" r="2" fill="var(--bg-input)" />
+            </svg>
+            Options
+            {activeCount > 0 && <span className="badge">{activeCount}</span>}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="chevron">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <span className="stats">
+            {filtered.length} of {posts.length} tunes
+          </span>
+        </div>
+        <div id="controls-panel" className={'controls-panel' + (controlsOpen ? ' open' : '')}>
+          <button className="btn secondary more-filters-btn" onClick={() => setModalOpen(true)}>
+            Filters
+            {activeCount > 0 && <span className="badge">{activeCount}</span>}
+          </button>
+          <label className="sort-select">
+            <span className="sr-only">Sort</span>
+            <select
+              value={sort}
+              onChange={(e) => changeSort(e.target.value as SortMode)}
+              aria-label="Sort tunes"
             >
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="fav-icon">
-                <path d="M12 17.3l-5.4 3.2 1.4-6.1-4.7-4.1 6.2-.5L12 4l2.5 5.7 6.2.5-4.7 4.1 1.4 6.1z" />
-              </svg>
-              Saved{favs.size > 0 ? ` (${favs.size})` : ''}
-            </button>
-            {hasActive && (
-              <button className="btn secondary" onClick={clearAll}>
-                Clear
-              </button>
-            )}
-            <span className="stats">
-              {filtered.length} of {posts.length} tunes
-            </span>
-          </div>
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </label>
           <div className="view-toggle" role="group" aria-label="View">
             <button
               className={'view-btn' + (view === 'compact' ? ' active' : '')}
@@ -232,6 +237,22 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
               </svg>
             </button>
           </div>
+          <button
+            className={'btn secondary saved-toggle' + (savedOnly ? ' active' : '')}
+            onClick={toggleSavedOnly}
+            aria-pressed={savedOnly}
+            title="Show saved tunes"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="fav-icon">
+              <path d="M12 17.3l-5.4 3.2 1.4-6.1-4.7-4.1 6.2-.5L12 4l2.5 5.7 6.2.5-4.7 4.1 1.4 6.1z" />
+            </svg>
+            Saved{favs.size > 0 ? ` (${favs.size})` : ''}
+          </button>
+          {hasActive && (
+            <button className="btn secondary" onClick={clearAll}>
+              Clear
+            </button>
+          )}
         </div>
       </div>
 
