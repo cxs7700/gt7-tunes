@@ -6,6 +6,8 @@ import BackButton from '@/components/BackButton';
 import DetailGallery from '@/components/DetailGallery';
 import SpecChips from '@/components/SpecChips';
 import FavoriteButton from '@/components/FavoriteButton';
+import RelatedTunes from '@/components/RelatedTunes';
+import { relatedPosts } from '@/lib/related';
 
 export function generateStaticParams() {
   return readPosts().map((p) => ({ id: p.id }));
@@ -19,6 +21,8 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
 export default function TunePage({ params }: { params: { id: string } }) {
   const post = getPostById(params.id);
   if (!post) notFound();
+
+  const related = relatedPosts(post, readPosts());
 
   return (
     <main className="detail">
@@ -49,6 +53,8 @@ export default function TunePage({ params }: { params: { id: string } }) {
       )}
 
       <DetailGallery images={post.imageUrls.map(withBasePath)} />
+
+      <RelatedTunes posts={related} />
     </main>
   );
 }
