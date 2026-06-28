@@ -70,14 +70,6 @@ The header shows `public/logo.svg` if present, otherwise it falls back to the
 point at a PNG) at `public/logo.svg`. Make sure you have the rights to any logo
 you add — game/brand logos are trademarked.
 
-## Background image
-
-The app shows `public/background.jpg` behind a semi-transparent black overlay
-(see `.app-bg` in `globals.css` and the inline overlay in `app/layout.tsx`). If
-the file is absent it falls back to the solid dark background. Drop a
-`background.jpg` into `public/` to use one (make sure you have the rights to it).
-Adjust the overlay opacity in `layout.tsx` to taste.
-
 ## Updating tunes
 
 Edit `data/posts.json` (array of `{ id, title, date, body, url, tags,
