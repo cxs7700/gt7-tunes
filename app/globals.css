@@ -126,14 +126,13 @@ body {
   position: sticky;
   top: var(--header-h);
   z-index: 150;
-  background: rgba(15, 16, 32, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   margin: 0 0 18px;
   border-bottom: 1px solid var(--border-soft);
 }
 .toolbar {
-  padding: 12px 0 10px;
+  padding: 0 0 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -161,7 +160,15 @@ body {
 }
 .toolbar input[type="text"]::placeholder { color: var(--text-dim); }
 .toolbar input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-.controls { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 100%;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Filters + count on the left, view toggle on the right */
+}
+.controls-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 /* Categorized filters */
 .filters { margin-bottom: 22px; display: flex; flex-direction: column; gap: 10px; }
@@ -381,7 +388,6 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 
 /* List-page stats live in the toolbar (header shows the brand). */
 .toolbar .stats {
-  margin-left: auto;
   color: var(--text-dim);
   font-size: 0.85rem;
   white-space: nowrap;
