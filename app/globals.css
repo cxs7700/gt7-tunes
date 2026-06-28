@@ -233,7 +233,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 0 14px 14px;
+  padding: 12px 14px 14px;
   max-height: 2000px;
   overflow: hidden;
   transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.2s ease;
