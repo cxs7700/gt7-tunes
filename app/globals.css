@@ -162,20 +162,6 @@ body {
 .toolbar input[type="text"]::placeholder { color: var(--text-dim); }
 .toolbar input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .controls { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
-.sort-control { display: flex; align-items: center; gap: 7px; }
-.sort-control label { color: var(--text-dim); font-size: 0.85rem; }
-.sort-control select {
-  padding: 9px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg-input);
-  color: var(--text);
-  font-size: 0.9rem;
-  outline: none;
-  cursor: pointer;
-  min-height: 40px;
-}
-.sort-control select:focus { border-color: var(--accent); }
 
 /* Categorized filters */
 .filters { margin-bottom: 22px; display: flex; flex-direction: column; gap: 10px; }
@@ -573,17 +559,6 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   gap: 12px;
   padding: 4px 0 12px;
 }
-.page-size { display: flex; align-items: center; gap: 7px; }
-.page-size label { color: var(--text-dim); font-size: 0.85rem; }
-.page-size select {
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg-input);
-  color: var(--text);
-  font-size: 0.9rem;
-  cursor: pointer;
-}
 .page-range { color: var(--text-dim); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
 .page-nav { display: flex; align-items: center; gap: 10px; }
 .page-indicator { color: var(--text-dim); font-size: 0.85rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
@@ -622,13 +597,14 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   background: transparent;
   border: none;
   color: var(--text-dim);
-  padding: 8px 12px;
+  width: 42px;
   min-height: 40px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  display: grid;
+  place-items: center;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
+.view-icon { width: 18px; height: 18px; display: block; }
 .view-btn:hover { color: var(--text); }
 .view-btn.active { background: var(--accent); color: #fff; }
 .view-btn + .view-btn { border-left: 1px solid var(--border); }
