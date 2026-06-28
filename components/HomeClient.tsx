@@ -141,6 +141,20 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           </div>
           <div className="view-toggle" role="group" aria-label="View">
             <button
+              className={'view-btn' + (view === 'compact' ? ' active' : '')}
+              aria-pressed={view === 'compact'}
+              aria-label="Compact view"
+              title="Compact view"
+              onClick={() => setView('compact')}
+            >
+              <svg className="view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                <rect x="14" y="14" width="7" height="7" rx="1.5" />
+              </svg>
+            </button>
+            <button
               className={'view-btn' + (view === 'detailed' ? ' active' : '')}
               aria-pressed={view === 'detailed'}
               aria-label="Detailed view"
@@ -154,20 +168,6 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
                 <line x1="4" y1="6" x2="4.01" y2="6" />
                 <line x1="4" y1="12" x2="4.01" y2="12" />
                 <line x1="4" y1="18" x2="4.01" y2="18" />
-              </svg>
-            </button>
-            <button
-              className={'view-btn' + (view === 'compact' ? ' active' : '')}
-              aria-pressed={view === 'compact'}
-              aria-label="Compact view"
-              title="Compact view"
-              onClick={() => setView('compact')}
-            >
-              <svg className="view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round" aria-hidden="true">
-                <rect x="3" y="3" width="7" height="7" rx="1.5" />
-                <rect x="14" y="3" width="7" height="7" rx="1.5" />
-                <rect x="3" y="14" width="7" height="7" rx="1.5" />
-                <rect x="14" y="14" width="7" height="7" rx="1.5" />
               </svg>
             </button>
           </div>
