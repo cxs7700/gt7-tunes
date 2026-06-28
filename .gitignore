@@ -10,3 +10,8 @@ next-env.d.ts
 *.tsbuildinfo
 .DS_Store
 npm-debug.log*
+
+# playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

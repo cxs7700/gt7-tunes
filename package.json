@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "validate-data": "node scripts/validate-data.mjs"
+    "validate-data": "node scripts/validate-data.mjs",
+    "serve-out": "node scripts/serve-out.mjs",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "next": "14.2.15",
@@ -16,6 +18,7 @@
     "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.56.1",
     "@types/node": "20.14.10",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
