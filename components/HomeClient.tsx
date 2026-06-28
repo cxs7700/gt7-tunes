@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Post, ViewMode } from '@/lib/types';
+import type { Post, ViewMode, SortMode } from '@/lib/types';
+import { SORT_OPTIONS } from '@/lib/types';
 import { buildCategorized, orderedCategories } from '@/lib/categorize';
 import { getFiltered } from '@/lib/filter';
 import { decodeState, encodeState, SCROLL_KEY, DEFAULT_PAGE_SIZE } from '@/lib/urlState';
@@ -21,6 +22,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
+  const [sort, setSort] = useState<SortMode>('newest');
   const [page, setPage] = useState(1);
   const size = DEFAULT_PAGE_SIZE; // fixed page size (per-page selector removed)
   const [view, setView] = useState<ViewMode>('detailed');
@@ -35,6 +37,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
     setSearchInput(s.search);
     setSearch(s.search);
     setActiveFilters(new Set(s.filters));
+    setSort(s.sort);
     setPage(s.page);
     setView(s.view);
     setUrlReady(true);
@@ -59,14 +62,14 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   // Reflect state into the URL (replace, no history spam) once the URL is read.
   useEffect(() => {
     if (!urlReady) return;
-    const qs = encodeState({ search, sort: 'newest', filters: [...activeFilters], page, size, view });
+    const qs = encodeState({ search, sort, filters: [...activeFilters], page, size, view });
     if (qs === window.location.search) return;
     router.replace(`/${qs}`, { scroll: false });
-  }, [urlReady, search, activeFilters, page, size, view, router]);
+  }, [urlReady, search, sort, activeFilters, page, size, view, router]);
 
   const filtered = useMemo(
-    () => getFiltered(posts, { search, sort: 'newest', activeFilters }, tagCategoryOf),
-    [posts, search, activeFilters, tagCategoryOf],
+    () => getFiltered(posts, { search, sort, activeFilters }, tagCategoryOf),
+    [posts, search, sort, activeFilters, tagCategoryOf],
   );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / size));
@@ -84,6 +87,12 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
   // collapsing on a stale value (each click re-reads the freshest page).
   function stepPage(delta: number) {
     setPage((p) => Math.min(Math.max(1, p + delta), totalPages));
+    window.scrollTo({ top: 0 });
+  }
+
+  function changeSort(s: SortMode) {
+    setSort(s);
+    setPage(1);
     window.scrollTo({ top: 0 });
   }
 
@@ -132,6 +141,20 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
               Filters
               {activeFilters.size > 0 && <span className="badge">{activeFilters.size}</span>}
             </button>
+            <label className="sort-select">
+              <span className="sr-only">Sort</span>
+              <select
+                value={sort}
+                onChange={(e) => changeSort(e.target.value as SortMode)}
+                aria-label="Sort tunes"
+              >
+                {SORT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </label>
             {hasActive && (
               <button className="btn secondary" onClick={clearAll}>
                 Clear

@@ -4,6 +4,7 @@ import { getPostById, readPosts } from '@/lib/posts';
 import { withBasePath } from '@/lib/basePath';
 import BackButton from '@/components/BackButton';
 import DetailGallery from '@/components/DetailGallery';
+import SpecChips from '@/components/SpecChips';
 
 export function generateStaticParams() {
   return readPosts().map((p) => ({ id: p.id }));
@@ -30,6 +31,8 @@ export default function TunePage({ params }: { params: { id: string } }) {
           Open on Patreon ↗
         </a>
       </div>
+
+      <SpecChips post={post} />
 
       <div className="detail-body">{post.body}</div>
 
