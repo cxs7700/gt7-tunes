@@ -164,11 +164,33 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             id="search"
             placeholder="Search car, track, setup…"
             value={searchInput}
+            enterKeyHint="search"
             onChange={(e) => {
               setSearchInput(e.target.value);
               setPage(1);
             }}
+            onKeyDown={(e) => {
+              // Dismiss the mobile keyboard on Enter (search is already live).
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                e.currentTarget.blur();
+              }
+            }}
           />
+          {searchInput && (
+            <button
+              type="button"
+              className="search-clear"
+              aria-label="Clear search"
+              onClick={() => {
+                setSearchInput('');
+                setSearch('');
+                setPage(1);
+              }}
+            >
+              ×
+            </button>
+          )}
         </div>
         <div className="controls">
           <button
