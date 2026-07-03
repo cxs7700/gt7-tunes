@@ -44,6 +44,22 @@ test('search narrows the result set', async ({ page }) => {
   await expect(page.locator('.post-card').first()).toBeVisible();
 });
 
+test('search clear button and Enter-to-blur', async ({ page }) => {
+  await page.goto(HOME);
+  const input = page.locator('#search');
+  await input.fill('porsche');
+  // Enter blurs the input (dismisses the mobile keyboard)
+  await input.press('Enter');
+  await expect(input).not.toBeFocused();
+  // Clear button appears and resets the query
+  const clear = page.locator('.search-clear');
+  await expect(clear).toBeVisible();
+  await clear.click();
+  await expect(input).toHaveValue('');
+  await expect(clear).toHaveCount(0);
+  await expect(page.locator('.stats')).toContainText('1068 of 1068');
+});
+
 test('search tolerates a typo (fuzzy match) and ranks the car first', async ({ page }) => {
   await page.goto(HOME);
   await page.fill('#search', 'porshe'); // missing the "c"

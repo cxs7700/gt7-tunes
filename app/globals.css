@@ -150,7 +150,7 @@ body {
 }
 .toolbar input[type="text"] {
   width: 100%;
-  padding: 11px 14px 11px 40px;
+  padding: 11px 42px 11px 40px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--bg-input);
@@ -161,6 +161,26 @@ body {
 }
 .toolbar input[type="text"]::placeholder { color: var(--text-dim); }
 .toolbar input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg-elev);
+  color: var(--text-dim);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.search-clear:hover { color: var(--text); background: var(--border); }
 .controls {
   display: flex;
   align-items: center;
