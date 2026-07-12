@@ -510,6 +510,7 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   justify-content: center;
   cursor: zoom-out;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  touch-action: none; /* we handle swipe/zoom/pan ourselves; no native pinch hijack */
 }
 .lightbox.open { display: flex; }
 .lightbox img { max-width: 95vw; max-height: 92vh; object-fit: contain; border-radius: var(--radius-sm); }
@@ -549,6 +550,31 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   transition: background 0.2s;
 }
 .lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
+
+/* Zoom controls (top-left of the lightbox). */
+.lightbox-zoom {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+.lightbox-zoom-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: var(--pill);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+.lightbox-zoom-btn svg { width: 20px; height: 20px; }
+.lightbox-zoom-btn:hover { background: rgba(255, 255, 255, 0.22); }
+.lightbox-zoom-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
 /* Responsive */
 @media (max-width: 760px) {
