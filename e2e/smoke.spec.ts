@@ -143,6 +143,21 @@ test('lightbox dots match the image count and track position', async ({ page }) 
   await expect(page.locator('.lb-dot').nth(1)).toHaveClass(/active/);
 });
 
+test('lightbox zoom buttons scale the image', async ({ page }) => {
+  await page.goto(HOME);
+  await page.locator('.card-overlay-link').first().click();
+  await page.locator('.detail-images img').first().click();
+  await expect(page.locator('.lightbox')).toBeVisible();
+  const img = page.locator('.lightbox img');
+  const zoomOut = page.locator('.lightbox-zoom-btn[aria-label="Zoom out"]');
+  const zoomIn = page.locator('.lightbox-zoom-btn[aria-label="Zoom in"]');
+  await expect(zoomOut).toBeDisabled(); // at min scale
+  await zoomIn.click();
+  const scaleX = await img.evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).a);
+  expect(scaleX).toBeGreaterThan(1);
+  await expect(zoomOut).toBeEnabled();
+});
+
 test('detail page shows a Similar tunes rail that navigates', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.card-overlay-link').first().click();
