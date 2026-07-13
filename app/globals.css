@@ -554,11 +554,14 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 }
 .lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
 
-/* Auto-hidden controls: fade out until the next interaction. */
+/* Auto-hidden controls: subtly slide + fade out until the next interaction.
+   Each group eases toward its nearest edge for a soft, cohesive feel. */
 .lightbox-close,
 .lightbox-zoom,
 .lightbox-nav,
-.lightbox-dots { transition: opacity 0.25s ease, background 0.2s; }
+.lightbox-dots {
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.35, 1), background 0.2s;
+}
 .lightbox.ui-hidden .lightbox-close,
 .lightbox.ui-hidden .lightbox-zoom,
 .lightbox.ui-hidden .lightbox-nav,
@@ -566,6 +569,11 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   opacity: 0;
   pointer-events: none;
 }
+.lightbox.ui-hidden .lightbox-close { transform: translateY(-8px); }
+.lightbox.ui-hidden .lightbox-zoom { transform: translateY(-8px); }
+.lightbox.ui-hidden .lightbox-nav.prev { transform: translateY(-50%) translateX(-10px) scale(0.92); }
+.lightbox.ui-hidden .lightbox-nav.next { transform: translateY(-50%) translateX(10px) scale(0.92); }
+.lightbox.ui-hidden .lightbox-dots { transform: translateX(-50%) translateY(10px); }
 
 /* Zoom controls (top-left of the lightbox). */
 .lightbox-zoom {
