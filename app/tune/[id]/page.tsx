@@ -10,6 +10,7 @@ import CompareButton from '@/components/CompareButton';
 import ShareButton from '@/components/ShareButton';
 import RelatedTunes from '@/components/RelatedTunes';
 import { relatedPosts } from '@/lib/related';
+import { absoluteUrl } from '@/lib/site';
 
 export function generateStaticParams() {
   return readPosts().map((p) => ({ id: p.id }));
@@ -17,7 +18,24 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { id: string } }): Metadata {
   const post = getPostById(params.id);
-  return { title: post ? `${post.title} — GT7 Tunes` : 'Tune not found — GT7 Tunes' };
+  if (!post) return { title: 'Tune not found' };
+  const description = post.body.replace(/\s+/g, ' ').trim().slice(0, 155);
+  const cover = post.imageUrls[0];
+  const image = absoluteUrl(cover ?? 'og-default.png');
+  const url = absoluteUrl(`tune/${post.id}/`);
+  return {
+    title: post.title,
+    description,
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description,
+      url,
+      images: [{ url: image, alt: post.title }],
+    },
+    twitter: { card: 'summary_large_image', title: post.title, description, images: [image] },
+    alternates: { canonical: url },
+  };
 }
 
 export default function TunePage({ params }: { params: { id: string } }) {
