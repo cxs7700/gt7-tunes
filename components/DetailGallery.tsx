@@ -7,6 +7,8 @@ const MAX_SCALE = 3;
 const STEP = 0.5;
 const HIDE_DELAY = 2500; // ms before controls auto-hide
 const SWIPE_THRESHOLD = 45; // px to commit a swipe
+const SWIPE_ANIM = 260; // ms for each slide phase
+const EASE = 'cubic-bezier(0.25, 0.8, 0.35, 1)';
 
 const dist = (a: React.Touch, b: React.Touch) =>
   Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
@@ -119,6 +121,7 @@ export default function DetailGallery({ images }: { images: string[] }) {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
       clearTimeout(hideTimer.current);
+      clearTimeout(slideTimer.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
@@ -131,6 +134,28 @@ export default function DetailGallery({ images }: { images: string[] }) {
   const wasHidden = useRef(false);
   const pinchDist = useRef(0);
   const pinchScale = useRef(1);
+  const slideTimer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Two-phase carousel slide: the current image slides fully out, then the new
+  // one slides in from the opposite side (so "next" enters from the right).
+  const commitSwipe = (toLeft: boolean) => {
+    const w = window.innerWidth;
+    swiped.current = true;
+    clearTimeout(slideTimer.current);
+    setAnimating(true);
+    setSwipeX(toLeft ? -w : w); // slide the current image off-screen
+    slideTimer.current = setTimeout(() => {
+      setAnimating(false);
+      (toLeft ? goNext : goPrev)(); // swap to the new image (zoom resets)
+      setSwipeX(toLeft ? w : -w); // place it on the incoming side, no transition
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          setAnimating(true);
+          setSwipeX(0); // slide it in
+        }),
+      );
+    }, SWIPE_ANIM);
+  };
 
   const onTouchStart = (e: React.TouchEvent) => {
     wasHidden.current = !uiVisible;
@@ -195,16 +220,12 @@ export default function DetailGallery({ images }: { images: string[] }) {
     const t = e.changedTouches[0];
     const dx = t.clientX - s.x;
     const dy = t.clientY - s.y;
-    setAnimating(true); // animate the settle / snap-back
+    setAnimating(true); // animate the slide / snap-back
     if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.2) {
-      swiped.current = true;
-      if (dx < 0 && canNext) {
-        setSwipeX(0);
-        goNext();
-      } else if (dx > 0 && canPrev) {
-        setSwipeX(0);
-        goPrev();
-      } else {
+      if (dx < 0 && canNext) commitSwipe(true);
+      else if (dx > 0 && canPrev) commitSwipe(false);
+      else {
+        swiped.current = true;
         setSwipeX(0); // at an end — snap back
       }
     } else {
@@ -313,7 +334,7 @@ export default function DetailGallery({ images }: { images: string[] }) {
             onClick={(e) => e.stopPropagation()}
             style={{
               transform,
-              transition: animating ? 'transform 0.22s ease' : 'none',
+              transition: animating ? `transform ${SWIPE_ANIM}ms ${EASE}` : 'none',
               cursor: scale > 1 ? 'grab' : 'zoom-out',
             }}
           />
