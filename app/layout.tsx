@@ -3,11 +3,15 @@ import Link from 'next/link';
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 import BrandLogo from '@/components/BrandLogo';
 import { BASE_PATH } from '@/lib/basePath';
+import { SITE_URL, absoluteUrl } from '@/lib/site';
 import './globals.css';
 
+const DESCRIPTION = 'A fast browser for a large collection of Gran Turismo 7 car tunes — categorized filtering, full-text search, and per-tune detail pages.';
+
 export const metadata: Metadata = {
-  title: 'GT7 Tunes',
-  description: 'A fast browser for Gran Turismo 7 car tunes.',
+  metadataBase: new URL(`${SITE_URL}/`),
+  title: { default: 'GT7 Tunes', template: '%s — GT7 Tunes' },
+  description: DESCRIPTION,
   applicationName: 'GT7 Tunes',
   manifest: `${BASE_PATH}/manifest.webmanifest`,
   icons: {
@@ -19,6 +23,20 @@ export const metadata: Metadata = {
     apple: [{ url: `${BASE_PATH}/apple-touch-icon.png`, sizes: '180x180' }],
   },
   appleWebApp: { capable: true, statusBarStyle: 'black-translucent', title: 'GT7 Tunes' },
+  openGraph: {
+    type: 'website',
+    siteName: 'GT7 Tunes',
+    title: 'GT7 Tunes',
+    description: DESCRIPTION,
+    url: `${SITE_URL}/`,
+    images: [{ url: absoluteUrl('og-default.png'), width: 1200, height: 630, alt: 'GT7 Tunes' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'GT7 Tunes',
+    description: DESCRIPTION,
+    images: [absoluteUrl('og-default.png')],
+  },
 };
 
 export const viewport: Viewport = {

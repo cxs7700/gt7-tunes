@@ -182,6 +182,24 @@ test('lightbox zoom buttons scale the image', async ({ page }) => {
   await expect(zoomOut).toBeEnabled();
 });
 
+test('detail page has social/OG metadata', async ({ page }) => {
+  await page.goto(HOME);
+  await page.locator('.card-overlay-link').first().click();
+  await expect(page).toHaveURL(/\/tune\/\d+\//);
+  const og = await page.getAttribute('meta[property="og:image"]', 'content');
+  expect(og).toMatch(/^https:\/\/.+\.(webp|png|jpe?g)$/);
+  expect(await page.getAttribute('meta[name="twitter:card"]', 'content')).toBe('summary_large_image');
+  expect(await page.getAttribute('link[rel="canonical"]', 'href')).toContain('/tune/');
+});
+
+test('sitemap and robots are served', async ({ request }) => {
+  const sm = await request.get('/gt7-tunes/sitemap.xml');
+  expect(sm.ok()).toBeTruthy();
+  expect(await sm.text()).toContain('/tune/');
+  const rb = await request.get('/gt7-tunes/robots.txt');
+  expect(await rb.text()).toContain('Sitemap:');
+});
+
 test('detail page shows a Similar tunes rail that navigates', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.card-overlay-link').first().click();
