@@ -620,6 +620,18 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
+  /* A gentle opacity cross-fade is acceptable under reduced motion (it's
+     movement that the setting targets). Keep the lightbox controls fading in/out
+     but drop the slide so nothing translates. */
+  .lightbox-close,
+  .lightbox-zoom,
+  .lightbox-nav,
+  .lightbox-dots { transition: opacity 0.3s ease !important; }
+  .lightbox.ui-hidden .lightbox-close,
+  .lightbox.ui-hidden .lightbox-zoom { transform: none; }
+  .lightbox.ui-hidden .lightbox-nav.prev,
+  .lightbox.ui-hidden .lightbox-nav.next { transform: translateY(-50%); }
+  .lightbox.ui-hidden .lightbox-dots { transform: translateX(-50%); }
 }
 
 /* List-page stats live in the toolbar (header shows the brand). */
