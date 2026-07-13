@@ -518,6 +518,7 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 3; /* above the image (its transform creates a stacking context) */
   background: rgba(255, 255, 255, 0.1);
   border: none;
   color: #fff;
@@ -528,15 +529,17 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   place-items: center;
   cursor: pointer;
   border-radius: var(--pill);
-  transition: background 0.2s;
+  transition: background 0.2s, opacity 0.25s;
 }
 .lightbox-nav:hover { background: rgba(255, 255, 255, 0.22); }
 .lightbox-nav.prev { left: 14px; }
 .lightbox-nav.next { right: 14px; }
+.lightbox-nav:disabled { opacity: 0.25; cursor: default; background: rgba(255, 255, 255, 0.1); }
 .lightbox-close {
   position: absolute;
   top: 14px;
   right: 16px;
+  z-index: 3;
   background: rgba(255, 255, 255, 0.1);
   border: none;
   color: #fff;
@@ -547,9 +550,22 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, opacity 0.25s;
 }
 .lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
+
+/* Auto-hidden controls: fade out until the next interaction. */
+.lightbox-close,
+.lightbox-zoom,
+.lightbox-nav,
+.lightbox-dots { transition: opacity 0.25s ease, background 0.2s; }
+.lightbox.ui-hidden .lightbox-close,
+.lightbox.ui-hidden .lightbox-zoom,
+.lightbox.ui-hidden .lightbox-nav,
+.lightbox.ui-hidden .lightbox-dots {
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* Zoom controls (top-left of the lightbox). */
 .lightbox-zoom {
@@ -558,7 +574,7 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
   left: 16px;
   display: flex;
   gap: 8px;
-  z-index: 2;
+  z-index: 3;
 }
 .lightbox-zoom-btn {
   width: 44px;
