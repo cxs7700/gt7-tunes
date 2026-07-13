@@ -47,3 +47,47 @@ if (errors.length) {
 console.log(
   `Data OK: ${posts.length} posts, ${ids.size} unique ids, ${imageRefs} image refs all present.`,
 );
+
+// --- Data-quality report (informational; never fails the build) ---
+// Surfaces drift on data PRs: coverage of the fields the UI derives, image
+// gaps, and tag spellings that differ only by case/spacing (merge candidates
+// for lib/tagMerge.ts). Kept non-fatal so legitimate data variance can't break
+// CI — it's a signal for reviewers, not a gate.
+const pct = (n) => `${((n / posts.length) * 100).toFixed(0)}% (${n}/${posts.length})`;
+
+const tagCount = new Map();
+for (const p of posts) for (const t of p.tags ?? []) tagCount.set(t, (tagCount.get(t) ?? 0) + 1);
+
+const ppRe = /^\d{3,4}\s*pp$|^\d{3,4}$/i;
+const starRe = /^\d+\s*stars?$/i;
+let ppCov = 0;
+let starCov = 0;
+let noImages = 0;
+for (const p of posts) {
+  const tags = (p.tags ?? []).map((t) => t.trim());
+  if (tags.some((t) => ppRe.test(t))) ppCov++;
+  if (tags.some((t) => starRe.test(t)) || /\d+\s*stars?\b/i.test(p.body ?? '')) starCov++;
+  if (!(p.imageUrls?.length)) noImages++;
+}
+
+// Group tags whose normalized (lowercase, collapsed-whitespace) form collides.
+const norm = (s) => s.toLowerCase().replace(/\s+/g, ' ').trim();
+const byNorm = new Map();
+for (const t of tagCount.keys()) {
+  const k = norm(t);
+  if (!byNorm.has(k)) byNorm.set(k, []);
+  byNorm.get(k).push(t);
+}
+const variantGroups = [...byNorm.values()].filter((g) => g.length > 1);
+
+console.log('\nData quality (informational):');
+console.log(`  PP coverage:      ${pct(ppCov)}`);
+console.log(`  Rating coverage:  ${pct(starCov)} (tags + body)`);
+console.log(`  Posts w/o images: ${noImages}`);
+console.log(`  Distinct tags:    ${tagCount.size}`);
+if (variantGroups.length) {
+  console.log(
+    `  ⚠ ${variantGroups.length} tag group(s) differ only by case/spacing — consider lib/tagMerge.ts:`,
+  );
+  for (const g of variantGroups.slice(0, 12)) console.log(`      ${g.join('  |  ')}`);
+}
