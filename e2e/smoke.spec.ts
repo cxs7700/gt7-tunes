@@ -133,14 +133,35 @@ test('lightbox dots match the image count and track position', async ({ page }) 
   await page.locator('.card-overlay-link').first().click();
   await expect(page).toHaveURL(/\/tune\/\d+\//);
   const imgs = page.locator('.detail-images img');
+  await expect(imgs.first()).toBeVisible();
   const n = await imgs.count();
   test.skip(n < 2, 'needs a multi-image tune');
   await imgs.first().click();
   await expect(page.locator('.lightbox')).toBeVisible();
   await expect(page.locator('.lb-dot')).toHaveCount(n);
   await expect(page.locator('.lb-dot').first()).toHaveClass(/active/);
+  await page.mouse.move(400, 300); // reveal auto-hidden controls
   await page.locator('.lightbox-nav.next').click();
   await expect(page.locator('.lb-dot').nth(1)).toHaveClass(/active/);
+});
+
+test('lightbox arrows disable at the ends (no infinite loop)', async ({ page }) => {
+  await page.goto(HOME);
+  await page.locator('.card-overlay-link').first().click();
+  const imgs = page.locator('.detail-images img');
+  await expect(imgs.first()).toBeVisible();
+  const n = await imgs.count();
+  test.skip(n < 2, 'needs a multi-image tune');
+  await imgs.first().click();
+  await expect(page.locator('.lightbox')).toBeVisible();
+  const prev = page.locator('.lightbox-nav.prev');
+  const next = page.locator('.lightbox-nav.next');
+  await expect(prev).toBeDisabled(); // first image
+  for (let i = 0; i < n - 1; i++) {
+    await page.mouse.move(400, 300);
+    await next.click();
+  }
+  await expect(next).toBeDisabled(); // last image, no wrap-around
 });
 
 test('lightbox zoom buttons scale the image', async ({ page }) => {
@@ -148,13 +169,16 @@ test('lightbox zoom buttons scale the image', async ({ page }) => {
   await page.locator('.card-overlay-link').first().click();
   await page.locator('.detail-images img').first().click();
   await expect(page.locator('.lightbox')).toBeVisible();
+  await page.mouse.move(400, 300); // reveal auto-hidden controls
   const img = page.locator('.lightbox img');
   const zoomOut = page.locator('.lightbox-zoom-btn[aria-label="Zoom out"]');
   const zoomIn = page.locator('.lightbox-zoom-btn[aria-label="Zoom in"]');
   await expect(zoomOut).toBeDisabled(); // at min scale
   await zoomIn.click();
-  const scaleX = await img.evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).a);
-  expect(scaleX).toBeGreaterThan(1);
+  // Poll: the transform animates, so wait for the scale to settle above 1.
+  await expect
+    .poll(() => img.evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).a))
+    .toBeGreaterThan(1);
   await expect(zoomOut).toBeEnabled();
 });
 
