@@ -537,6 +537,18 @@ body {
 }
 .tag-count { font-size: 0.9rem; font-weight: 500; color: var(--text-dim); }
 
+/* Saved-tunes page reuses the tag-page layout. */
+.saved-page { max-width: var(--maxw); margin: 0 auto; padding: 20px; }
+.saved-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 6px 0 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 /* Headline spec chips (PP / Class / Drivetrain / Rating) — derived, prominent. */
 .spec-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 .spec-chip {
