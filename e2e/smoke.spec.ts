@@ -190,6 +190,27 @@ test('lightbox zoom buttons scale the image', async ({ page }) => {
   await expect(zoomOut).toBeEnabled();
 });
 
+test('lightbox click-to-zoom cycles in then resets, with matching cursor', async ({ page }) => {
+  await page.goto(HOME);
+  await page.locator('.card-overlay-link').first().click();
+  await page.locator('.detail-images img').first().click();
+  const img = page.locator('.lightbox img');
+  await expect(img).toBeVisible();
+  const scaleOf = () =>
+    img.evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).a);
+  await expect(img).toHaveCSS('cursor', 'zoom-in'); // full size → can zoom in
+  // four clicks step 1 → 1.5 → 2 → 2.5 → 3 (max)
+  for (let i = 0; i < 4; i++) {
+    await img.click();
+    await page.waitForTimeout(60);
+  }
+  await expect.poll(scaleOf).toBeGreaterThan(2.9);
+  await expect(img).toHaveCSS('cursor', 'zoom-out'); // at max → can zoom out
+  await img.click(); // one more resets to full
+  await expect.poll(scaleOf).toBeLessThan(1.1);
+  await expect(img).toHaveCSS('cursor', 'zoom-in');
+});
+
 test('detail page has social/OG metadata', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.card-overlay-link').first().click();

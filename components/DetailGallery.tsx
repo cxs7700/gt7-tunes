@@ -89,6 +89,21 @@ export default function DetailGallery({ images }: { images: string[] }) {
     });
   };
 
+  // Click-to-zoom: step in on each click until max, then a click resets to full.
+  const onImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    showUI();
+    setAnimating(true);
+    setScale((s) => {
+      if (s >= MAX_SCALE) {
+        setPanX(0);
+        setPanY(0);
+        return 1; // at max → reset to full
+      }
+      return Math.min(MAX_SCALE, +(s + STEP).toFixed(2));
+    });
+  };
+
   const clampPan = (x: number, y: number, s: number) => {
     const maxX = ((s - 1) * window.innerWidth) / 2;
     const maxY = ((s - 1) * window.innerHeight) / 2;
@@ -310,11 +325,11 @@ export default function DetailGallery({ images }: { images: string[] }) {
           <img
             src={images[idx]}
             alt=""
-            onClick={(e) => e.stopPropagation()}
+            onClick={onImageClick}
             style={{
               transform,
               transition: animating ? 'transform 0.22s ease' : 'none',
-              cursor: scale > 1 ? 'grab' : 'zoom-out',
+              cursor: scale >= MAX_SCALE ? 'zoom-out' : 'zoom-in',
             }}
           />
 
