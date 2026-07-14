@@ -656,6 +656,11 @@ mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2p
 }
 .post-card:focus-within { border-color: var(--accent); }
 
+/* Thumbnails fade in once loaded (from the neutral placeholder) instead of
+   popping. Reduced-motion drops the transition via the global rule. */
+.fade-img { opacity: 0; transition: opacity 0.35s ease; }
+.fade-img.loaded { opacity: 1; }
+
 /* Favorite (save) star — sits above the overlay link so it stays clickable. */
 .fav-btn {
   display: inline-flex;
