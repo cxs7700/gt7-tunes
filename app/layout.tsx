@@ -47,6 +47,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <header className="app-header">
           <div className="app-header-inner">
             <Link href="/" className="brand brand-link" aria-label="GT7 Tunes — home">
@@ -54,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Link>
           </div>
         </header>
-        {children}
+        <div id="main">{children}</div>
         <ServiceWorkerRegister />
       </body>
     </html>
