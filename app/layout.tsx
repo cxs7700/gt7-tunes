@@ -55,6 +55,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="brand brand-link" aria-label="GT7 Tunes — home">
               <BrandLogo />
             </Link>
+            <nav className="app-nav">
+              <Link href="/browse" className="app-nav-link">
+                Browse
+              </Link>
+            </nav>
           </div>
         </header>
         <div id="main">{children}</div>
