@@ -247,6 +247,22 @@ test('sitemap and robots are served', async ({ request }) => {
   expect(await rb.text()).toContain('Sitemap:');
 });
 
+test('scroll-to-top button appears after scrolling and returns to top', async ({ page }) => {
+  await page.goto('/gt7-tunes/tag/fr/', { waitUntil: 'networkidle' }); // long list
+  await expect(page.locator('.scroll-top')).toHaveCount(0); // hidden at top
+  await page.evaluate(() => window.scrollTo(0, 1500));
+  const btn = page.locator('.scroll-top');
+  await expect(btn).toBeVisible();
+  await btn.click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(50);
+});
+
+test('custom 404 page links home and to browse', async ({ page }) => {
+  await page.goto('/gt7-tunes/tune/does-not-exist/', { waitUntil: 'networkidle' });
+  await expect(page.locator('.notfound-title')).toHaveText('Page not found');
+  await expect(page.locator('.notfound-actions .btn')).toHaveCount(2);
+});
+
 test('browse hub links to tag pages', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.app-nav-link', { hasText: 'Browse' }).click();
