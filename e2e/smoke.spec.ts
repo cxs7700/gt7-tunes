@@ -208,6 +208,18 @@ test('sitemap and robots are served', async ({ request }) => {
   expect(await rb.text()).toContain('Sitemap:');
 });
 
+test('browse hub links to tag pages', async ({ page }) => {
+  await page.goto(HOME);
+  await page.locator('.app-nav-link', { hasText: 'Browse' }).click();
+  await expect(page).toHaveURL(/\/browse\/?$/);
+  await expect(page.locator('.browse-heading', { hasText: 'Make / Brand' })).toBeVisible();
+  // /^Porsche\d/ matches the "Porsche" make chip (text "Porsche62"), not "Porsche Cup".
+  const porsche = page.locator('.browse-chip', { hasText: /^Porsche\d/ }).first();
+  await porsche.click();
+  await expect(page).toHaveURL(/\/tag\/porsche\/?$/);
+  await expect(page.locator('.tag-title')).toContainText('Porsche');
+});
+
 test('detail tag links open a browseable tag page', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.card-overlay-link').first().click();

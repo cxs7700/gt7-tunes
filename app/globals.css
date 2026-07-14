@@ -85,6 +85,45 @@ body {
   box-shadow: var(--shadow-sm);
 }
 .brand-name { font-size: 1.1rem; font-weight: 700; }
+.app-nav { display: flex; align-items: center; gap: 14px; }
+.app-nav-link {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, background 0.15s;
+}
+.app-nav-link:hover { color: var(--text); background: var(--bg-input); }
+
+/* Browse hub */
+.browse-page { max-width: var(--maxw); margin: 0 auto; padding: 20px; }
+.browse-title { font-size: 1.5rem; font-weight: 700; margin: 6px 0 22px; }
+.browse-section { margin-bottom: 26px; }
+.browse-heading {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+.browse-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.browse-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: var(--pill);
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.browse-chip:hover { border-color: var(--accent); background: var(--bg-elev); }
+.browse-chip-count { color: var(--text-dim); font-size: 0.8em; font-variant-numeric: tabular-nums; }
 .brand-logo { height: 30px; width: auto; display: block; }
 .app-header .stats {
   color: var(--text-dim);
