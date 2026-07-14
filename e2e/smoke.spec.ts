@@ -37,6 +37,13 @@ test('PWA manifest and icons are wired up', async ({ page, request }) => {
   );
 });
 
+test('card thumbnails fade in once loaded', async ({ page }) => {
+  await page.goto(HOME);
+  const cover = page.locator('.post-card .card-cover').first();
+  await expect(cover).toBeVisible();
+  await expect(cover).toHaveClass(/loaded/); // fade completes after load
+});
+
 test('search narrows the result set', async ({ page }) => {
   await page.goto(HOME);
   await page.fill('#search', 'porsche');
