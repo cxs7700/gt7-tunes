@@ -21,6 +21,7 @@ export default function DetailGallery({ images }: { images: string[] }) {
   const [swipeX, setSwipeX] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [uiVisible, setUiVisible] = useState(true);
+  const [dragging, setDragging] = useState(false);
   const n = images.length;
 
   const canPrev = idx !== null && idx > 0;
@@ -92,6 +93,10 @@ export default function DetailGallery({ images }: { images: string[] }) {
   // Click-to-zoom: step in on each click until max, then a click resets to full.
   const onImageClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (suppressClick.current) {
+      suppressClick.current = false; // this "click" ended a pan-drag
+      return;
+    }
     showUI();
     setAnimating(true);
     setScale((s) => {
@@ -102,6 +107,50 @@ export default function DetailGallery({ images }: { images: string[] }) {
       }
       return Math.min(MAX_SCALE, +(s + STEP).toFixed(2));
     });
+  };
+
+  // Desktop panning of a zoomed image: drag with the mouse, or scroll/trackpad.
+  const mouseDown = useRef(false);
+  const mouseStart = useRef({ x: 0, y: 0 });
+  const mousePanStart = useRef({ x: 0, y: 0 });
+  const mouseMoved = useRef(false);
+  const suppressClick = useRef(false);
+
+  const onImageMouseDown = (e: React.MouseEvent) => {
+    if (scale <= 1) return; // nothing to pan; let the click zoom
+    mouseDown.current = true;
+    mouseStart.current = { x: e.clientX, y: e.clientY };
+    mousePanStart.current = { x: panX, y: panY };
+    mouseMoved.current = false;
+    e.preventDefault(); // avoid the browser's image-drag ghost / text selection
+  };
+
+  const onLightboxMouseMove = (e: React.MouseEvent) => {
+    showUI();
+    if (!mouseDown.current) return;
+    const dx = e.clientX - mouseStart.current.x;
+    const dy = e.clientY - mouseStart.current.y;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) mouseMoved.current = true;
+    const { x, y } = clampPan(mousePanStart.current.x + dx, mousePanStart.current.y + dy, scale);
+    setAnimating(false);
+    setDragging(true);
+    setPanX(x);
+    setPanY(y);
+  };
+
+  const onLightboxMouseUp = () => {
+    if (!mouseDown.current) return;
+    mouseDown.current = false;
+    setDragging(false);
+    if (mouseMoved.current) suppressClick.current = true; // it was a pan, not a click
+  };
+
+  const onLightboxWheel = (e: React.WheelEvent) => {
+    if (scale <= 1) return;
+    const { x, y } = clampPan(panX - e.deltaX, panY - e.deltaY, scale);
+    setAnimating(false);
+    setPanX(x);
+    setPanY(y);
   };
 
   const clampPan = (x: number, y: number, s: number) => {
@@ -260,7 +309,10 @@ export default function DetailGallery({ images }: { images: string[] }) {
         <div
           className={'lightbox open' + (uiVisible ? '' : ' ui-hidden')}
           onClick={onBackdropClick}
-          onMouseMove={showUI}
+          onMouseMove={onLightboxMouseMove}
+          onMouseUp={onLightboxMouseUp}
+          onMouseLeave={onLightboxMouseUp}
+          onWheel={onLightboxWheel}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
@@ -325,11 +377,13 @@ export default function DetailGallery({ images }: { images: string[] }) {
           <img
             src={images[idx]}
             alt=""
+            draggable={false}
             onClick={onImageClick}
+            onMouseDown={onImageMouseDown}
             style={{
               transform,
               transition: animating ? 'transform 0.22s ease' : 'none',
-              cursor: scale >= MAX_SCALE ? 'zoom-out' : 'zoom-in',
+              cursor: dragging ? 'grabbing' : scale >= MAX_SCALE ? 'zoom-out' : 'zoom-in',
             }}
           />
 
