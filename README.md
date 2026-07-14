@@ -74,5 +74,14 @@ you add — game/brand logos are trademarked.
 
 Edit `data/posts.json` (array of `{ id, title, date, body, url, tags,
 imageUrls }`) and add images under `public/images/`. New tags are categorized
-automatically; add new GT7 brands to `MAKES` in `lib/categorize.ts`. Run
-`npm run validate-data` to check integrity, then rebuild.
+automatically; add new GT7 brands to `MAKES` in `lib/categorize.ts`. Then:
+
+```bash
+npm run thumbnails     # generate/commit cover thumbnails under public/thumbs/
+npm run validate-data  # integrity check (also verifies every cover has a thumbnail)
+```
+
+The grid and Similar-tunes rail load the small WebP thumbnails (`public/thumbs/`,
+~86% smaller than the full screenshots); the lightbox still uses the originals.
+`validate-data` fails if a cover is missing its thumbnail, so re-run
+`npm run thumbnails` after adding tunes.

@@ -37,10 +37,11 @@ test('PWA manifest and icons are wired up', async ({ page, request }) => {
   );
 });
 
-test('card thumbnails fade in once loaded', async ({ page }) => {
+test('card covers use committed thumbnails and fade in once loaded', async ({ page }) => {
   await page.goto(HOME);
   const cover = page.locator('.post-card .card-cover').first();
   await expect(cover).toBeVisible();
+  await expect(cover).toHaveAttribute('src', /\/thumbs\/.+\.webp$/); // small thumbnail, not full image
   await expect(cover).toHaveClass(/loaded/); // fade completes after load
 });
 
