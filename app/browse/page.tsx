@@ -4,7 +4,7 @@ import { readPosts } from '@/lib/posts';
 import { buildCategorized, orderedCategories } from '@/lib/categorize';
 import { slugifyTag } from '@/lib/tags';
 
-export const metadata: Metadata = { title: 'Browse tunes' };
+export const metadata: Metadata = { title: 'Explore tunes' };
 
 // A hub that makes the per-tag pages discoverable: every tag, grouped by
 // category, with its count, linking to /tag/<slug>.
@@ -15,7 +15,7 @@ export default function BrowsePage() {
 
   return (
     <main className="browse-page">
-      <h1 className="browse-title">Browse tunes</h1>
+      <h1 className="browse-title">Explore tunes</h1>
       {cats.map((cat) => (
         <section className="browse-section" key={cat}>
           <h2 className="browse-heading">{cat}</h2>

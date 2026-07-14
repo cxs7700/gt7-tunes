@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Link>
             <nav className="app-nav">
               <Link href="/browse" className="app-nav-link">
-                Browse
+                Explore
               </Link>
               <Link href="/favorites" className="app-nav-link">
                 Saved

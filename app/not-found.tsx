@@ -24,7 +24,7 @@ export default function NotFound() {
           Browse all tunes
         </Link>
         <Link className="btn secondary" href="/browse">
-          Browse by tag
+          Explore by tag
         </Link>
       </div>
     </main>
