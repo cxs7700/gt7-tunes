@@ -5,7 +5,7 @@
   --bg-elev: #171936;
   --bg-card: #171936;
   --bg-input: #20233f;
-  --accent: #e94560;
+  --accent: #db1a4a;
   --accent-hover: #ff6b81;
   --accent-soft: rgba(233, 69, 96, 0.15);
   --text: #f2f3f9;
@@ -13,7 +13,7 @@
   --border: #2c2f4f;
   --border-soft: #232646;
   --tag-bg: #20233f;
-  --tag-active: #e94560;
+  --tag-active: #db1a4a;
   --radius: 16px;
   --radius-sm: 10px;
   --pill: 999px;
@@ -36,6 +36,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 ::selection { background: var(--accent); color: #fff; }
+
+/* Skip link — visible only when focused (keyboard). */
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -60px;
+  z-index: 1000;
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 8px; }
 
 /* App header */
 .app-header {
