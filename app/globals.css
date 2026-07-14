@@ -466,6 +466,21 @@ body {
 .expand-btn:hover { color: var(--accent-hover); }
 .post-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .post-tag { padding: 3px 10px; border-radius: var(--pill); background: var(--tag-bg); color: var(--text-dim); font-size: 0.78rem; }
+.post-tag-link { text-decoration: none; transition: background 0.15s, color 0.15s; }
+.post-tag-link:hover { background: var(--accent-soft); color: var(--text); }
+
+/* Browse-by-tag landing page */
+.tag-page { max-width: var(--maxw); margin: 0 auto; padding: 20px; }
+.tag-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 6px 0 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tag-count { font-size: 0.9rem; font-weight: 500; color: var(--text-dim); }
 
 /* Headline spec chips (PP / Class / Drivetrain / Rating) — derived, prominent. */
 .spec-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
