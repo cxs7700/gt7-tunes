@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { Post, ViewMode } from '@/lib/types';
 import { withBasePath } from '@/lib/basePath';
+import { thumbUrl } from '@/lib/images';
 import { saveListScroll } from '@/lib/urlState';
 import Highlight from './Highlight';
 import SpecChips from './SpecChips';
@@ -41,7 +42,7 @@ export default function TuneCard({
       </div>
 
       {cover && (
-        <FadeImage className="card-cover" src={withBasePath(cover)} loading="lazy" decoding="async" alt="" />
+        <FadeImage className="card-cover" src={withBasePath(thumbUrl(cover))} loading="lazy" decoding="async" alt="" />
       )}
 
       <div className="post-header">

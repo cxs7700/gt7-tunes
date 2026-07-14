@@ -16,6 +16,11 @@ const required = ['id', 'title', 'date', 'body', 'url', 'tags', 'imageUrls'];
 const ids = new Set();
 let missingImages = 0;
 let imageRefs = 0;
+let missingThumbs = 0;
+
+// Cover -> committed thumbnail (mirror of lib/images.ts / generate-thumbnails).
+const thumbFor = (cover) =>
+  cover.startsWith('images/') ? cover.replace(/^images\//, 'thumbs/') : cover;
 
 for (const p of posts) {
   for (const k of required) {
@@ -35,6 +40,12 @@ for (const p of posts) {
       missingImages++;
       if (missingImages <= 10) errors.push(`missing image: ${url}`);
     }
+  }
+  // Each post's cover must have a committed thumbnail (run `npm run thumbnails`).
+  const cover = p.imageUrls?.[0];
+  if (cover && !fs.existsSync(path.join(root, 'public', thumbFor(cover)))) {
+    missingThumbs++;
+    if (missingThumbs <= 10) errors.push(`missing thumbnail: ${thumbFor(cover)} (run: npm run thumbnails)`);
   }
 }
 
