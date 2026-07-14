@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
+import ScrollToTop from '@/components/ScrollToTop';
 import BrandLogo from '@/components/BrandLogo';
 import { BASE_PATH } from '@/lib/basePath';
 import { SITE_URL, absoluteUrl } from '@/lib/site';
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
         <div id="main">{children}</div>
+        <ScrollToTop />
         <ServiceWorkerRegister />
       </body>
     </html>
