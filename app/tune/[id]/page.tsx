@@ -11,6 +11,8 @@ import ShareButton from '@/components/ShareButton';
 import RelatedTunes from '@/components/RelatedTunes';
 import { relatedPosts } from '@/lib/related';
 import { absoluteUrl } from '@/lib/site';
+import { tagHref } from '@/lib/tags';
+import Link from 'next/link';
 
 export function generateStaticParams() {
   return readPosts().map((p) => ({ id: p.id }));
@@ -67,9 +69,9 @@ export default function TunePage({ params }: { params: { id: string } }) {
       {post.tags.length > 0 && (
         <div className="post-tags">
           {post.tags.map((t) => (
-            <span className="post-tag" key={t}>
+            <Link className="post-tag post-tag-link" href={tagHref(t)} key={t}>
               {t}
-            </span>
+            </Link>
           ))}
         </div>
       )}

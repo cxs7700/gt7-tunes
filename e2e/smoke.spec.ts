@@ -208,6 +208,18 @@ test('sitemap and robots are served', async ({ request }) => {
   expect(await rb.text()).toContain('Sitemap:');
 });
 
+test('detail tag links open a browseable tag page', async ({ page }) => {
+  await page.goto(HOME);
+  await page.locator('.card-overlay-link').first().click();
+  await expect(page).toHaveURL(/\/tune\/\d+\//);
+  const tag = page.locator('.post-tag-link').first();
+  const label = (await tag.innerText()).trim();
+  await tag.click();
+  await expect(page).toHaveURL(/\/tag\/.+\//);
+  await expect(page.locator('.tag-title')).toContainText(label);
+  await expect(page.locator('.post-card').first()).toBeVisible();
+});
+
 test('detail page shows a Similar tunes rail that navigates', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.card-overlay-link').first().click();
