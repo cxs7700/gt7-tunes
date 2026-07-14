@@ -37,6 +37,24 @@ test('PWA manifest and icons are wired up', async ({ page, request }) => {
   );
 });
 
+test('card grid supports arrow-key navigation', async ({ page }) => {
+  await page.goto(HOME);
+  const links = page.locator('.card-overlay-link');
+  await links.first().focus();
+  const focusedIndex = () =>
+    page.evaluate(() =>
+      Array.from(document.querySelectorAll('.card-overlay-link')).indexOf(
+        document.activeElement as Element,
+      ),
+    );
+  await page.keyboard.press('ArrowRight');
+  expect(await focusedIndex()).toBe(1);
+  await page.keyboard.press('ArrowDown');
+  expect(await focusedIndex()).toBeGreaterThan(1); // moved down a row
+  await page.keyboard.press('Home');
+  expect(await focusedIndex()).toBe(0);
+});
+
 test('card covers use committed thumbnails and fade in once loaded', async ({ page }) => {
   await page.goto(HOME);
   const cover = page.locator('.post-card .card-cover').first();
