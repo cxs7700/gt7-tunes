@@ -229,6 +229,32 @@ test('lightbox click-to-zoom cycles in then resets, with matching cursor', async
   await expect(img).toHaveCSS('cursor', 'zoom-in');
 });
 
+test('lightbox: zoomed image pans with mouse drag', async ({ page }) => {
+  await page.goto(HOME);
+  await page.locator('.card-overlay-link').first().click();
+  await page.locator('.detail-images img').first().click();
+  const img = page.locator('.lightbox img');
+  await expect(img).toBeVisible();
+  await img.click(); // zoom to 1.5
+  await page.waitForTimeout(60);
+  await img.click(); // zoom to 2
+  await page.waitForTimeout(120);
+  const translate = () =>
+    img.evaluate((el) => {
+      const m = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+      return Math.abs(m.e) + Math.abs(m.f); // translate x+y magnitude
+    });
+  expect(await translate()).toBeLessThan(1); // centered before pan
+  const box = (await img.boundingBox())!;
+  const cx = box.x + box.width / 2;
+  const cy = box.y + box.height / 2;
+  await page.mouse.move(cx, cy);
+  await page.mouse.down();
+  await page.mouse.move(cx - 140, cy - 90, { steps: 8 });
+  await page.mouse.up();
+  expect(await translate()).toBeGreaterThan(30); // image moved (panned)
+});
+
 test('detail page has social/OG metadata', async ({ page }) => {
   await page.goto(HOME);
   await page.locator('.card-overlay-link').first().click();
