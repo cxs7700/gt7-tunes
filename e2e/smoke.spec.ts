@@ -291,7 +291,7 @@ test('custom 404 page links home and to browse', async ({ page }) => {
 
 test('browse hub links to tag pages', async ({ page }) => {
   await page.goto(HOME);
-  await page.locator('.app-nav-link', { hasText: 'Browse' }).click();
+  await page.locator('.app-nav-link', { hasText: 'Explore' }).click();
   await expect(page).toHaveURL(/\/browse\/?$/);
   await expect(page.locator('.browse-heading', { hasText: 'Make / Brand' })).toBeVisible();
   // /^Porsche\d/ matches the "Porsche" make chip (text "Porsche62"), not "Porsche Cup".
