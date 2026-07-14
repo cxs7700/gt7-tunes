@@ -60,6 +60,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/browse" className="app-nav-link">
                 Browse
               </Link>
+              <Link href="/favorites" className="app-nav-link">
+                Saved
+              </Link>
             </nav>
           </div>
         </header>

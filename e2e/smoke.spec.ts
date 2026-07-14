@@ -368,3 +368,20 @@ test('favorites persist and the Saved view filters to them', async ({ page }) =>
   await page.reload();
   await expect(page.locator('.post-card')).toHaveCount(1); // localStorage persisted
 });
+
+test('dedicated Saved page lists saved tunes and empties when removed', async ({ page }) => {
+  await page.goto(HOME);
+  await page.locator('.post-card .card-fav').first().click();
+
+  // Reach the page through the header nav link.
+  await page.click('.app-nav-link[href$="/favorites/"]');
+  await expect(page).toHaveURL(/\/favorites\//);
+  await expect(page.locator('.saved-title')).toContainText('Saved tunes');
+  await expect(page.locator('.saved-title .tag-count')).toHaveText('1');
+  await expect(page.locator('.post-card')).toHaveCount(1);
+
+  // Un-saving from this page drops it to the empty state.
+  await page.locator('.post-card .card-fav').first().click();
+  await expect(page.locator('.post-card')).toHaveCount(0);
+  await expect(page.locator('.empty-state')).toBeVisible();
+});
