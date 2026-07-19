@@ -1,8 +1,15 @@
 import { test, expect } from '@playwright/test';
+import fs from 'node:fs';
+import path from 'node:path';
 
 // Smoke coverage for the recurring flows that have regressed before — these were
 // previously hand-run with Playwright on every PR; now they gate CI.
 const HOME = '/gt7-tunes/';
+
+// Total tune count, read from the canonical data so data merges don't break tests.
+const TOTAL = (
+  JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'posts.json'), 'utf8')) as unknown[]
+).length;
 
 // Filters / Sort / view / Saved live behind the "Options" toggle (collapsed by
 // default). Open it before interacting with those controls.
@@ -18,7 +25,7 @@ test('home loads all tunes with no page errors', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto(HOME);
-  await expect(page.locator('.stats')).toContainText('of 1068 tunes');
+  await expect(page.locator('.stats')).toContainText(`of ${TOTAL} tunes`);
   expect(errors).toEqual([]);
 });
 
@@ -66,7 +73,7 @@ test('card covers use committed thumbnails and fade in once loaded', async ({ pa
 test('search narrows the result set', async ({ page }) => {
   await page.goto(HOME);
   await page.fill('#search', 'porsche');
-  await expect(page.locator('.stats')).not.toContainText('1068 of');
+  await expect(page.locator('.stats')).not.toContainText(`${TOTAL} of`);
   await expect(page.locator('.post-card').first()).toBeVisible();
 });
 
@@ -83,7 +90,7 @@ test('search clear button and Enter-to-blur', async ({ page }) => {
   await clear.click();
   await expect(input).toHaveValue('');
   await expect(clear).toHaveCount(0);
-  await expect(page.locator('.stats')).toContainText('1068 of 1068');
+  await expect(page.locator('.stats')).toContainText(`${TOTAL} of ${TOTAL}`);
 });
 
 test('search tolerates a typo (fuzzy match) and ranks the car first', async ({ page }) => {
